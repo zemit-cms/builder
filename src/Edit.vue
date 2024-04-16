@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app id="builder">
     <MainToolbar color="toolbar" />
 
     <v-navigation-drawer color="toolbar" v-model="store.componentDrawer.opened" permanent location="left">
@@ -19,7 +19,11 @@
           <router-view />
         </v-sheet>
         <v-divider />
-        <ContentToolbar v-if="store.contentToolbar.opened" color="toolbar" />
+        <ContentToolbar
+          v-if="store.contentToolbar.opened"
+          class="animated"
+          color="toolbar"
+        />
       </div>
     </v-main>
   </v-app>

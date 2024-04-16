@@ -15,6 +15,7 @@ import { createVuetify } from 'vuetify'
 // @ts-ignore
 export default createVuetify({
   theme: {
+    defaultTheme: 'light',
     themes: {
       light: {
         colors: {
@@ -30,10 +31,11 @@ export default createVuetify({
         }
       },
       dark: {
+        dark: true,
         colors: {
-          toolbar: '#FDFDFD',
-          surface: '#FFFFFF',
-          background: '#F6F6F6',
+          // toolbar: '#FDFDFD',
+          // surface: '#FFFFFF',
+          // background: '#F6F6F6',
         }
       }
     }

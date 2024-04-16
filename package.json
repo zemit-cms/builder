@@ -1,14 +1,16 @@
 {
-  "name": "zemit-builder",
+  "name": "@zemit/builder",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev-edit": "vite --mode edit",
+    "dev-view": "vite --port 3001 --mode view",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
     "lint": "eslint . --fix --ignore-path .gitignore"
   },
   "dependencies": {
     "@mdi/font": "6.2.95",
+    "@vueuse/core": "^10.9.0",
     "core-js": "^3.34.0",
     "roboto-fontface": "*",
     "vue": "^3.4.21",

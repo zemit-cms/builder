@@ -8,12 +8,15 @@
 import { registerPlugins } from '@/plugins'
 
 // Components
-import App from './App.vue'
+import Edit from './Edit.vue'
 
 // Composables
 import { createApp } from 'vue'
 
-const app = createApp(App)
+// Stylesheets
+import '@/styles/index.scss'
+
+const app = createApp(Edit)
 
 registerPlugins(app)
 

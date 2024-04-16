@@ -8,8 +8,11 @@
 import ButtonList from '@/components/ButtonList';
 import { IAppState, useStore } from '@/stores/app';
 import { IButton } from '@/interfaces'
+import { useFullscreen } from '@vueuse/core'
 
 const store = useStore();
+const builderRef = document.getElementById('builder');
+const { isFullscreen, toggle } = useFullscreen(builderRef);
 
 const buttons: IButton<any>[] = [
   { tooltip: 'Dock component drawer', icon: 'mdi-dock-left', onClick: onDockLeftClick, active: () => store.componentDrawer.opened },
@@ -17,7 +20,7 @@ const buttons: IButton<any>[] = [
   { tooltip: 'Undo', icon: 'mdi-undo' },
   { tooltip: 'Redo', icon: 'mdi-redo' },
   { spacer: true },
-  { tooltip: 'Fullscreen', icon: 'mdi-fullscreen' },
+  { tooltip: () => isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen', icon: () => isFullscreen ? 'mdi-fullscreen-exit' : 'mdi-fullscreen', onClick: toggle },
   { divider: true },
   { tooltip: 'Undo', icon: 'mdi-dock-bottom', onClick: onDockBottomClick, active: () => store.contentToolbar.opened },
   { tooltip: 'Redo', icon: 'mdi-dock-right', onClick: onDockRightClick, active: () => store.optionDrawer.opened },

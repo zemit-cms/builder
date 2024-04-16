@@ -4,22 +4,22 @@
     <v-spacer v-else-if="button.spacer" />
     <v-tooltip
       v-else
-      :text="button.tooltip"
+      :text="getValue(button.tooltip)"
+      :open-delay="500"
       location="bottom"
-      open-delay="500"
     >
       <template #activator="{ props }">
         <v-btn
           v-bind="props"
-          :disabled="button.disabled && button.disabled()"
+          :disabled="getValue(button.disabled)"
+          :active="getValue(button.active)"
           size="small"
           @click="button.onClick"
         >
           <v-icon
             v-if="button.icon"
-            :color="button.active && button.active() ? 'primary' : null"
           >
-            {{ button.icon }}
+            {{ getValue(button.icon) }}
           </v-icon>
         </v-btn>
       </template>
@@ -34,4 +34,11 @@ import { IButton } from '../interfaces';
 defineProps<{
   modelValue: IButton<any>[]
 }>()
+
+function getValue(value: any) {
+  if (typeof value === 'function') {
+    console.log(typeof value === 'function' ? value() : value);
+  }
+  return typeof value === 'function' ? value() : value;
+}
 </script>

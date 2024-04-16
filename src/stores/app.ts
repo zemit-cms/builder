@@ -1,5 +1,6 @@
 // Utilities
 import { defineStore } from 'pinia'
+import { useStorage } from '@vueuse/core';
 
 export interface IAppState {
   zoomSelection: number,
@@ -23,9 +24,9 @@ export enum ContentViewMode {
 }
 
 export const useStore = defineStore<string, IAppState>('app', {
-  state: () => ({
+  state: () => useStorage('zemit/app', {
     zoomSelection: 100,
-    contentViewMode: ContentViewMode.Desktop,
+    contentViewMode: ContentViewMode.Fit,
     componentDrawer: {
       opened: true,
     },
@@ -35,5 +36,5 @@ export const useStore = defineStore<string, IAppState>('app', {
     contentToolbar: {
       opened: true,
     },
-  }),
+  }) as IAppState,
 })
