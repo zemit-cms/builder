@@ -44,7 +44,7 @@ const zoomStyle = computed((): IContentZoomStyle => getContentZoomStyle());
 const contentWidth = computed((): string => width.value.value + width.value.format);
 const contentHeight = computed((): string => height.value.value + height.value.format);
 const canEdit = props.mode === Mode.Edit;
-const iframeUrl = 'http://localhost:3001';//import.meta.env.VITE_VIEW_URL;
+const iframeUrl = import.meta.env.VITE_VIEW_URL;
 </script>
 
 <style lang="scss" scoped>
