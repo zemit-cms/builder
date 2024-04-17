@@ -5,5 +5,7 @@ html, body {
   transition: width ease-in-out 150ms,
     height ease-in-out 150ms,
     min-width ease-in-out 150ms,
-    min-height ease-in-out 150ms;
+    min-height ease-in-out 150ms,
+    max-width ease-in-out 150ms,
+    max-height ease-in-out 150ms;
 }

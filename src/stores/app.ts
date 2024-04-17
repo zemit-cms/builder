@@ -23,7 +23,7 @@ export enum ContentViewMode {
   Fit,
 }
 
-export const useStore = defineStore<string, IAppState>('app', {
+export const useAppStore = defineStore<string, IAppState>('app', {
   state: () => useStorage('zemit/app', {
     zoomSelection: 100,
     contentViewMode: ContentViewMode.Fit,

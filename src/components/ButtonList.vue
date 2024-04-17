@@ -36,9 +36,6 @@ defineProps<{
 }>()
 
 function getValue(value: any) {
-  if (typeof value === 'function') {
-    console.log(typeof value === 'function' ? value() : value);
-  }
   return typeof value === 'function' ? value() : value;
 }
 </script>

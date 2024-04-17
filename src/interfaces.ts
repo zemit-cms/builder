@@ -53,6 +53,6 @@ export interface IButton<T> {
   divider?: boolean | (() => boolean),
   spacer?: boolean | (() => boolean),
   onClick?: (props?: any) => void,
-  active?: () => boolean | (() => boolean),
-  disabled?: () => boolean | (() => boolean),
+  active?: boolean | (() => boolean),
+  disabled?: boolean | (() => boolean),
 }
