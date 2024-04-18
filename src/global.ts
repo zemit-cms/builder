@@ -14,8 +14,8 @@ export const zoomList: IList<number>[] = [
 ];
 
 export const viewModeList: IButton<ContentViewMode>[] = [
-  { value: ContentViewMode.Mobile, icon: 'mdi-cellphone', tooltip: 'Mobile' },
-  { value: ContentViewMode.Tablet, icon: 'mdi-tablet', tooltip: 'Tablet' },
-  { value: ContentViewMode.Desktop, icon: 'mdi-desktop-mac', tooltip: 'Desktop' },
-  { value: ContentViewMode.Fit, icon: 'mdi-fit-to-page-outline', tooltip: 'Fit screen' },
+  { value: ContentViewMode.Mobile, icon: 'mdi-cellphone', tooltip: 'Mobile', shortcut: 'alt+m' },
+  { value: ContentViewMode.Tablet, icon: 'mdi-tablet', tooltip: 'Tablet', shortcut: 'alt+t' },
+  { value: ContentViewMode.Desktop, icon: 'mdi-desktop-mac', tooltip: 'Desktop', shortcut: 'alt+d' },
+  { value: ContentViewMode.Fit, icon: 'mdi-fit-to-page-outline', tooltip: 'Fit screen', shortcut: 'alt+f' },
 ]

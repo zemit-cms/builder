@@ -13,8 +13,10 @@ declare module 'vue' {
     ComponentDrawerInner: typeof import('./components/layout/ComponentDrawerInner.vue')['default']
     ContentToolbar: typeof import('./components/layout/ContentToolbar.vue')['default']
     MainToolbar: typeof import('./components/layout/MainToolbar.vue')['default']
+    Modal: typeof import('./components/Modal.vue')['default']
     OptionDrawerInner: typeof import('./components/layout/OptionDrawerInner.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Settings: typeof import('./components/Settings.vue')['default']
   }
 }

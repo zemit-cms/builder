@@ -4,13 +4,18 @@
     :show-arrows="false"
     grow
   >
-    <v-tab :value="1">Style</v-tab>
-    <v-tab :value="2">Text</v-tab>
+    <v-tab value="style">Style</v-tab>
+    <v-tab value="text">Text</v-tab>
   </v-tabs>
   <v-window v-model="tab">
-    <div class="pa-4">
-
-    </div>
+    <v-window v-model="tab">
+      <v-window-item value="style" class="pa-4">
+        STYLE
+      </v-window-item>
+      <v-window-item value="text" class="pa-4">
+        TEXT
+      </v-window-item>
+    </v-window>
   </v-window>
 </template>
 

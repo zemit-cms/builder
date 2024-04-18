@@ -55,4 +55,5 @@ export interface IButton<T> {
   onClick?: (props?: any) => void,
   active?: boolean | (() => boolean),
   disabled?: boolean | (() => boolean),
+  shortcut?: string | string[],
 }

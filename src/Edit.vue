@@ -1,12 +1,24 @@
 <template>
   <v-app>
+    <Settings v-model="sessionStore.settings.opened" width="500" />
+
     <MainToolbar color="toolbar" />
 
-    <v-navigation-drawer color="toolbar" v-model="appStore.componentDrawer.opened" permanent location="left">
+    <v-navigation-drawer
+      v-model="appStore.componentDrawer.opened"
+      color="toolbar"
+      permanent
+      location="left"
+    >
       <ComponentDrawerInner />
     </v-navigation-drawer>
 
-    <v-navigation-drawer color="toolbar" v-model="appStore.optionDrawer.opened" permanent location="right">
+    <v-navigation-drawer
+      v-model="appStore.optionDrawer.opened"
+      color="toolbar"
+      permanent
+      location="right"
+    >
       <OptionDrawerInner />
     </v-navigation-drawer>
 
@@ -35,11 +47,20 @@
 </template>
 
 <script lang="ts" setup>
-import MainToolbar from './components/layout/MainToolbar.vue';
-import ContentToolbar from './components/layout/ContentToolbar.vue';
-import ComponentDrawerInner from './components/layout/ComponentDrawerInner.vue';
-import OptionDrawerInner from './components/layout/OptionDrawerInner.vue';
+import MainToolbar from '@/components/layout/MainToolbar.vue';
+import ContentToolbar from '@/components/layout/ContentToolbar.vue';
+import Settings from '@/components/Settings.vue';
+import ComponentDrawerInner from '@/components/layout/ComponentDrawerInner.vue';
+import OptionDrawerInner from '@/components/layout/OptionDrawerInner.vue';
 import { useAppStore } from '@/stores/app';
+import { ShortcutType, useShortcut } from '@/composables/shortcut';
+import { useSessionStore } from './stores/session';
 
 const appStore = useAppStore();
+const sessionStore = useSessionStore();
+const shortcut = useShortcut();
+shortcut.enable([
+  ShortcutType.Zoom,
+  ShortcutType.ContentViewMode,
+]);
 </script>

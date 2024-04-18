@@ -7,7 +7,7 @@
         group
         border
         mandatory
-        @change="onChangeContentViewMode"
+        @change="setChangeContentViewMode"
       >
         <ButtonList
           v-model="viewModeList"
@@ -74,7 +74,7 @@
 <script lang="ts" setup>
 import ButtonList from '@/components/ButtonList'
 import { zoomList, viewModeList } from '@/global'
-import { useAppStore } from '@/stores/app'
+import { ContentViewMode, useAppStore } from '@/stores/app'
 import { useZoom } from '@/composables/zoom'
 
 const appStore = useAppStore()
@@ -88,10 +88,8 @@ const {
   decreaseZoom,
   onZoomMinusClick,
   onZoomPlusClick,
-  onChangeContentViewMode,
   adjustZoomValue,
+  setChangeContentViewMode,
 } = useZoom()
-
-const items = []
 
 </script>

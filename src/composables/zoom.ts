@@ -143,7 +143,15 @@ export function useZoom() {
     }
   }
 
-  function onChangeContentViewMode(contentViewMode: ContentViewMode) {
+  function setZoomValue(amount: number) {
+    if (amount >= minZoom.value && amount <= maxZoom.value) {
+      appStore.$patch({
+        zoomSelection: amount,
+      })
+    }
+  }
+
+  function setChangeContentViewMode(contentViewMode: ContentViewMode) {
     appStore.$patch({
       contentViewMode,
     })
@@ -162,9 +170,10 @@ export function useZoom() {
     getContentWidth,
     getContentHeight,
     getContentZoomStyle,
+    setChangeContentViewMode,
     adjustZoomValue,
+    setZoomValue,
     onZoomMinusClick,
     onZoomPlusClick,
-    onChangeContentViewMode,
   }
 }
