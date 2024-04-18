@@ -65,10 +65,10 @@ import { VDialogProps } from "@/utils/props";
 
 interface Props {
   vDialogProps?: Partial<VDialogProps>
-  title: { type: [String, Boolean], default: false },
+  title: string | boolean,
 }
 withDefaults(defineProps<Props>(), {
-  title: ''
+  title: false
 })
 
 // defineProps({

@@ -3,7 +3,7 @@
     v-bind="$attrs"
     title="Settings"
     icon="mdi-dots-vertical"
-
+    v-dialog-props="{}"
   >
     <template #body.prepend>
       <v-tabs
