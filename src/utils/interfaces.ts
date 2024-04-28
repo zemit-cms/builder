@@ -1,23 +1,8 @@
-export enum BuilderWidgetType {
-  Text = 'text',
-  Image = 'image',
-}
+import { Component } from 'vue'
 
 export enum Mode {
   Edit = 'edit',
   View = 'view',
-}
-
-export interface IBuilder {
-  name: string,
-  version: string,
-  widgets: IBuilderWidget[],
-}
-
-export interface IBuilderWidget {
-  id?: string,
-  type: BuilderWidgetType,
-  children: IBuilderWidget[],
 }
 
 export enum CSSUnit {
@@ -45,6 +30,12 @@ export interface IList<T> {
   value: T
 }
 
+export interface ITab {
+  value: string | number,
+  label: string | (() => string),
+  component: Component
+}
+
 export interface IButton<T> {
   value?: T,
   label?: string | (() => string),
@@ -56,4 +47,5 @@ export interface IButton<T> {
   active?: boolean | (() => boolean),
   disabled?: boolean | (() => boolean),
   shortcut?: string | string[],
+  setup?: any,
 }

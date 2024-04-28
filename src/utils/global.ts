@@ -1,5 +1,5 @@
-import { IList, IButton } from './interfaces';
-import { ContentViewMode } from './stores/app';
+import { IList, IButton } from '@/utils/interfaces';
+import { ContentViewMode } from '@/utils/enums';
 
 export const zoomList: IList<number>[] = [
   { title: '25', value: 25, },

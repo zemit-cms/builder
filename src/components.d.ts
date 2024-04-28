@@ -7,14 +7,16 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    ActionButton: typeof import('./components/ActionButton.vue')['default']
     Builder: typeof import('./components/Builder.vue')['default']
     ButtonList: typeof import('./components/ButtonList.vue')['default']
-    ComponentDrawer: typeof import('./components/layout/ComponentDrawerInner.vue')['default']
-    ComponentDrawerInner: typeof import('./components/layout/ComponentDrawerInner.vue')['default']
-    ContentToolbar: typeof import('./components/layout/ContentToolbar.vue')['default']
-    MainToolbar: typeof import('./components/layout/MainToolbar.vue')['default']
+    ComponentDrawer: typeof import('./plugins/component-drawer/ComponentDrawerInner.vue')['default']
+    ComponentDrawerInner: typeof import('./plugins/component-drawer/ComponentDrawerInner.vue')['default']
+    ContentToolbar: typeof import('@/plugins/content-toolbar/ContentToolbar.vue')['default']
+    MainToolbar: typeof import('./plugins/toolbar/Toolbar.vue')['default']
     Modal: typeof import('./components/Modal.vue')['default']
-    OptionDrawerInner: typeof import('./components/layout/OptionDrawerInner.vue')['default']
+    OptionDrawerInner: typeof import('./plugins/option-drawer/OptionDrawerInner.vue')['default']
+    Plugins: typeof import('./components/Plugins.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Settings: typeof import('./components/Settings.vue')['default']

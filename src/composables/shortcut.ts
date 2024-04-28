@@ -1,26 +1,21 @@
-import { ContentViewMode } from '../stores/app';
 import { useMagicKeys } from '@vueuse/core/index';
-import { useZoom } from '@/composables/zoom';
 import { useSessionStore, ISessionState } from '@/stores/session';
 
-export enum ShortcutType {
-  Zoom,
-  ContentViewMode,
+export interface IShortcut {
+  name: string,
+  description: string,
+  keys: string[],
+  callback: (event: KeyboardEvent) => void,
 }
+
+export let shortcutList: IShortcut[] = [];
 
 export function useShortcut() {
 
-  const {
-    onZoomMinusClick,
-    onZoomPlusClick,
-    setZoomValue,
-    setChangeContentViewMode,
-  } = useZoom()
+  function bootstrap() {
+    const sessionStore = useSessionStore();
 
-  const sessionStore = useSessionStore();
-
-  function enable(types: ShortcutType[]) {
-    const keys = useMagicKeys({
+    useMagicKeys({
       passive: false,
       onEventFired(e) {
 
@@ -30,38 +25,21 @@ export function useShortcut() {
           state.shiftKeyActivated = e.shiftKey;
         })
 
-        if (e.ctrlKey && e.type === 'keydown') {
-          e.preventDefault();
-          if (types.includes(ShortcutType.Zoom)) {
-            switch (e.key) {
-              case '0':
-                setZoomValue(100);
-                break;
-              case '=':
-                onZoomPlusClick();
-                break;
-              case '-':
-                onZoomMinusClick();
-                break;
+        if (e.type === 'keydown') {
+          for (let i = 0; i < shortcutList.length; i++) {
+            const shortcut = shortcutList[i];
+            if (e.ctrlKey && shortcut.keys.includes('ctrl')) {
+              if (shortcut.keys.includes(e.key)) {
+                shortcut.callback(e);
+                return;
+              }
             }
-          }
-        }
-        if (e.altKey && e.type === 'keydown') {
-          if (types.includes(ShortcutType.ContentViewMode)) {
-            e.preventDefault();
-            switch (e.key) {
-              case 'm':
-                setChangeContentViewMode(ContentViewMode.Mobile);
-                break;
-              case 't':
-                setChangeContentViewMode(ContentViewMode.Tablet);
-                break;
-              case 'd':
-                setChangeContentViewMode(ContentViewMode.Desktop);
-                break;
-              case 'f':
-                setChangeContentViewMode(ContentViewMode.Fit);
-                break;
+            if (e.altKey && shortcut.keys.includes('alt')) {
+              e.preventDefault();
+              if (shortcut.keys.includes(e.key)) {
+                shortcut.callback(e);
+                return;
+              }
             }
           }
         }
@@ -69,7 +47,24 @@ export function useShortcut() {
     })
   }
 
+  function enable(shortcut: IShortcut | IShortcut[]) {
+    const items = Array.isArray(shortcut) ? shortcut : [shortcut];
+    items.forEach(item => {
+      shortcutList.push({
+        ...item,
+        keys: item.keys.join('+').toLowerCase().split('+')
+      })
+    })
+  }
+
+  function disable(name: string | string[]) {
+    const names = Array.isArray(name) ? name : [name];
+    shortcutList = shortcutList.filter(shortcut => names.includes(shortcut.name));
+  }
+
   return {
+    bootstrap,
     enable,
+    disable,
   }
 }

@@ -1,7 +1,8 @@
-import { computed, ref } from 'vue';
-import { zoomList } from '../global';
-import { ContentViewMode, useAppStore } from '../stores/app';
-import { CSSUnit, ICSSUnit } from '../interfaces';
+import { computed, Ref } from 'vue';
+import { zoomList } from '@/utils/global';
+import { ContentViewMode } from '@/utils/enums';
+import { useAppStore } from '@/stores/app';
+import { CSSUnit, ICSSUnit } from '@/utils/interfaces';
 
 export interface IContentZoomStyle {
   zoom?: number,
@@ -56,7 +57,7 @@ export function useZoom() {
 
   const factor = computed((): number => currentZoom.value / 100);
 
-  function getContentWidth(container: ref<HTMLDivElement>): ICSSUnit {
+  function getContentWidth(container: Ref<HTMLDivElement>): ICSSUnit {
     let format = CSSUnit.Percentage;
     let value = 100;
     if (!container.value || appStore.contentViewMode !== ContentViewMode.Fit) {
@@ -75,7 +76,7 @@ export function useZoom() {
     }
   }
 
-  function getContentHeight(container: ref<HTMLDivElement>): ICSSUnit {
+  function getContentHeight(container: Ref<HTMLDivElement>): ICSSUnit {
     let format = CSSUnit.Percentage;
     let value = 100;
     if (!container.value || appStore.contentViewMode !== ContentViewMode.Fit) {
@@ -111,15 +112,19 @@ export function useZoom() {
     }
   }
 
-  function onZoomMinusClick() {
-    if (canZoomOut.value) {
+  function onZoomPlusClick() {
+    increaseZoomIndex();
+  }
+
+  function increaseZoom(amount = 1) {
+    if (canZoomIn.value) {
       appStore.$patch({
-        zoomSelection: zoomList[zoomIndex.value - 1].value,
+        zoomSelection: currentZoom.value + amount,
       })
     }
   }
 
-  function onZoomPlusClick() {
+  function increaseZoomIndex() {
     if (canZoomIn.value) {
       appStore.$patch({
         zoomSelection: zoomList[zoomIndex.value + 1].value,
@@ -135,10 +140,14 @@ export function useZoom() {
     }
   }
 
-  function increaseZoom(amount = 1) {
-    if (canZoomIn.value) {
+  function onZoomMinusClick() {
+    decreaseZoomIndex();
+  }
+
+  function decreaseZoomIndex() {
+    if (canZoomOut.value) {
       appStore.$patch({
-        zoomSelection: currentZoom.value + amount,
+        zoomSelection: zoomList[zoomIndex.value - 1].value,
       })
     }
   }
@@ -165,15 +174,17 @@ export function useZoom() {
     minZoom,
     maxZoom,
     factor,
-    decreaseZoom,
     increaseZoom,
+    increaseZoomIndex,
+    onZoomPlusClick,
+    decreaseZoom,
+    decreaseZoomIndex,
+    onZoomMinusClick,
     getContentWidth,
     getContentHeight,
     getContentZoomStyle,
     setChangeContentViewMode,
     adjustZoomValue,
     setZoomValue,
-    onZoomMinusClick,
-    onZoomPlusClick,
   }
 }

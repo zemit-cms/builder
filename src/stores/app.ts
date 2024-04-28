@@ -5,15 +5,6 @@ import { useStorage } from '@vueuse/core';
 export interface IAppState {
   zoomSelection: number,
   contentViewMode: ContentViewMode,
-  componentDrawer: {
-    opened: boolean,
-  },
-  optionDrawer: {
-    opened: boolean,
-  },
-  contentToolbar: {
-    opened: boolean,
-  },
 }
 
 export enum ContentViewMode {
@@ -24,17 +15,8 @@ export enum ContentViewMode {
 }
 
 export const useAppStore = defineStore<string, IAppState>('app', {
-  state: () => useStorage('zemit/app', {
+  state: () => useStorage<IAppState>('zemit/app', {
     zoomSelection: 100,
     contentViewMode: ContentViewMode.Fit,
-    componentDrawer: {
-      opened: true,
-    },
-    optionDrawer: {
-      opened: true,
-    },
-    contentToolbar: {
-      opened: true,
-    },
-  }) as IAppState,
+  }),
 })

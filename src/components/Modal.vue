@@ -2,7 +2,6 @@
   <v-dialog
     v-bind="vDialogProps"
     v-model="visible"
-    width="auto"
   >
     <v-card>
       <template v-if="showHeader">
@@ -25,22 +24,25 @@
             @click="visible = false"
           ></v-btn>
         </v-card-title>
-        <v-divider />
+        <div v-if="slots['header.append']" style="flex: 0">
+          <slot name="header.append"></slot>
+        </div>
+        <v-divider v-if="!hideHeaderDivider" />
       </template>
 
       <slot name="content">
-        <slot name="body.prepend"></slot>
-        <div v-if="showBody" class="py-4 bg-toolbar">
-          <v-card-text>
-            <slot name="default"></slot>
+        <v-card-text class="pa-0 bg-toolbar">
+          <slot name="default"></slot>
+          <slot name="body.prepend"></slot>
+          <div v-if="showBody" class="pa-4">
             <slot name="body"></slot>
-          </v-card-text>
-        </div>
-        <slot name="body.append"></slot>
+          </div>
+          <slot name="body.append"></slot>
+        </v-card-text>
       </slot>
 
       <div v-if="showActions" class="d-block">
-        <v-divider />
+        <v-divider v-if="!hideFooterDivider" />
         <v-card-actions class="d-flex justify-space-between">
           <slot name="actions.left"></slot>
           <v-spacer />
@@ -60,29 +62,33 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, defineModel } from 'vue';
+import { defineModel, useSlots } from 'vue';
 import { VDialogProps } from "@/utils/props";
 
-interface Props {
-  vDialogProps?: Partial<VDialogProps>
+withDefaults(defineProps<{
+  vDialogProps?: Partial<VDialogProps>,
   title: string | boolean,
-}
-withDefaults(defineProps<Props>(), {
-  title: false
+  icon: string | boolean,
+  showHeader?: boolean,
+  showCloseButton?: boolean,
+  showBody?: boolean,
+  showActions?: boolean,
+  hideHeaderDivider?: boolean,
+  hideFooterDivider?: boolean,
+}>(), {
+  vDialogProps: null,
+  title: false,
+  icon: false,
+  showHeader: true,
+  showCloseButton: true,
+  showBody: true,
+  showActions: true,
+  hideHeaderDivider: false,
+  hideFooterDivider: false,
 })
 
-// defineProps({
-//   vDialogProps: Partial<VDialogProps>,
-//   value: { type: Boolean, default: true },
-//   title: { type: [String, Boolean], default: false },
-//   icon: { type: [String, Boolean], default: false },
-//   showHeader: { type: Boolean, default: true },
-//   showCloseButton: { type: Boolean, default: true },
-//   showBody: { type: Boolean, default: true },
-//   showActions: { type: Boolean, default: true },
-// })
-
-const visible = defineModel();
+const visible = defineModel<boolean>();
+const slots = useSlots();
 </script>
 
 <style lang="scss" scoped>
