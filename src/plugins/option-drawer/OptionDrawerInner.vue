@@ -1,6 +1,6 @@
 <template>
   <v-tabs
-    v-model="tab"
+    v-model="store.tab"
     :show-arrows="false"
     grow
   >
@@ -10,7 +10,7 @@
       :key="tab.value"
     >{{ tab.label }}</v-tab>
   </v-tabs>
-  <v-window v-model="tab">
+  <v-window v-model="store.tab">
     <v-window-item
       v-for="tab in tabs"
       :value="tab.value"
@@ -23,11 +23,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
 import { ITab } from '@/utils/interfaces';
+import { useStore } from '@/plugins/option-drawer/store';
 
-const tab = ref(0);
-
+const store = useStore();
 withDefaults(defineProps<{
   tabs: ITab[],
 }>(), {

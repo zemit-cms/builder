@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia';
+import { definePluginStore } from '@/stores';
 
 export interface IContentStore {
   name: string,
@@ -12,10 +12,8 @@ export interface IContentWidget {
   children: IContentWidget[],
 }
 
-export const useStore = defineStore<string, IContentStore>('content', {
-  state: () => ({
-    name: '',
-    version: 0.1,
-    widgets: [],
-  }),
+export const useStore = definePluginStore<IContentStore>('content', {
+  name: '',
+  version: 0.1,
+  widgets: [],
 })

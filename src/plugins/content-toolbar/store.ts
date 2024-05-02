@@ -1,10 +1,9 @@
-import { defineStore } from 'pinia';
+import { definePluginStore } from '@/stores';
 
 export interface IContentToolbarStore {
   opened: boolean
 }
-export const useStore = defineStore<string, IContentToolbarStore>('content.toolbar', {
-  state: () => ({
-    opened: true,
-  }),
+
+export const useStore = definePluginStore<IContentToolbarStore>('contentToolbar', {
+  opened: true,
 })

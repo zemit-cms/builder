@@ -14,9 +14,14 @@ export enum ContentViewMode {
   Fit,
 }
 
+const data: IAppState = {
+  zoomSelection: 100,
+  contentViewMode: ContentViewMode.Fit,
+}
+
 export const useAppStore = defineStore<string, IAppState>('app', {
-  state: () => useStorage<IAppState>('zemit/app', {
-    zoomSelection: 100,
-    contentViewMode: ContentViewMode.Fit,
+  // @ts-ignore
+  state: () => useStorage<IAppState>('zemit/builder/app', data, localStorage, {
+    mergeDefaults: true
   }),
 })

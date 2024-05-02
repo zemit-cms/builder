@@ -9,7 +9,7 @@ import StyleForm from '@/plugins/option-drawer/StyleForm.vue';
 import TextForm from '@/plugins/option-drawer/TextForm.vue';
 import ButtonSettings from '@/plugins/settings/ButtonSettings.vue';
 import ShortcutList from '@/plugins/settings/ShortcutList.vue';
-import GeneralForm from '@/plugins/settings/GeneralForm.vue';
+import GeneralForm, { ISettingsGeneralFormProps } from '@/plugins/settings/GeneralForm.vue';
 import Content from '@/plugins/content/Content.vue';
 import ContentToolbar, { IContentToolbarProps } from '@/plugins/content-toolbar/ContentToolbar.vue';
 import ButtonContentToolbar from '@/plugins/content-toolbar/ButtonContentToolbar.vue';
@@ -55,6 +55,13 @@ plugins.install<ISettingsProps>({
       value: 'general',
       label: 'General',
       component: GeneralForm,
+      props: <ISettingsGeneralFormProps>{
+        fields: [{
+          category: 'View',
+          name: 'Grid view',
+          component: ButtonFullscreen
+        }],
+      }
     }, {
       value: 'shortcuts',
       label: 'Shortcuts',

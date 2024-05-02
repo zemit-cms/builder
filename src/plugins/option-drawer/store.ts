@@ -1,11 +1,11 @@
-import { defineStore } from 'pinia';
+import { definePluginStore } from '@/stores';
 
 export interface IOptionDrawerStore {
   opened: boolean,
+  tab: string | null,
 }
 
-export const useStore = defineStore<string, IOptionDrawerStore>('optionDrawer', {
-  state: () => ({
-    opened: true,
-  }),
+export const useStore = definePluginStore<IOptionDrawerStore>('optionDrawer', {
+  opened: true,
+  tab: null,
 })

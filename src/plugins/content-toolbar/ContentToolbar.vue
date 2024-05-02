@@ -81,7 +81,7 @@ shortcut.enable([{
     class="animated"
   >
     <v-divider />
-    <v-toolbar color="surface" style="flex: 0" density="comfortable">
+    <v-toolbar color="surface" style="flex: 0" class="pl-3" density="comfortable">
       <ButtonList :model-value="buttons" />
     </v-toolbar>
   </div>

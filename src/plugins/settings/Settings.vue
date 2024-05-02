@@ -9,7 +9,7 @@
   >
     <template v-slot:[`header.append`]>
       <v-tabs
-        v-model="tab"
+        v-model="store.tab"
         :show-arrows="false"
         bg-color="surface"
         grow
@@ -23,13 +23,13 @@
       <v-divider />
     </template>
     <template #body>
-      <v-window v-model="tab">
+      <v-window v-model="store.tab">
         <v-window-item
           v-for="tab in tabs"
           :value="tab.value"
           :key="tab.value"
         >
-          <component :is="tab.component"></component>
+          <component v-bind="tab.props" :is="tab.component"></component>
         </v-window-item>
       </v-window>
     </template>
@@ -46,7 +46,6 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
 import { useShortcut } from '@/composables/shortcut';
 import { useStore } from '@/plugins/settings/store';
 import { ITab } from '@/utils/interfaces';
@@ -56,9 +55,7 @@ export interface ISettingsProps {
   tabs?: ITab[],
 }
 
-const tab = ref('general');
 const store = useStore();
-
 const shortcut = useShortcut();
 shortcut.enable([{
   name: 'toolbar_settings',

@@ -13,6 +13,8 @@ declare module 'vue' {
     ComponentDrawer: typeof import('./plugins/component-drawer/ComponentDrawerInner.vue')['default']
     ComponentDrawerInner: typeof import('./plugins/component-drawer/ComponentDrawerInner.vue')['default']
     ContentToolbar: typeof import('@/plugins/content-toolbar/ContentToolbar.vue')['default']
+    FieldAccordion: typeof import('./components/FieldAccordion.vue')['default']
+    GroupedCategories: typeof import('./components/GroupedCategories.vue')['default']
     MainToolbar: typeof import('./plugins/toolbar/Toolbar.vue')['default']
     Modal: typeof import('./components/Modal.vue')['default']
     OptionDrawerInner: typeof import('./plugins/option-drawer/OptionDrawerInner.vue')['default']

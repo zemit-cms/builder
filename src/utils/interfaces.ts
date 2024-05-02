@@ -30,10 +30,11 @@ export interface IList<T> {
   value: T
 }
 
-export interface ITab {
+export interface ITab<P = {}> {
   value: string | number,
   label: string | (() => string),
   component: Component
+  props?: P
 }
 
 export interface IButton<T> {

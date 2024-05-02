@@ -22,7 +22,6 @@ export interface IOptionDrawerProps {
 }
 
 const store = useStore();
-
 const shortcut = useShortcut();
 shortcut.enable([{
   name: 'option_drawer',

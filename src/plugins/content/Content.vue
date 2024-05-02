@@ -3,11 +3,11 @@
     <Plugins category="content.prepend" />
     <v-sheet class="animated" color="background" :style="[
       'flex: 1',
-      { maxHeight: canEdit ? contentToolbarStore.opened ? 'calc(100vh - 104px)' : 'calc(100vh - 50px)' : undefined }
+      { maxHeight: canEdit ? contentToolbarStore.opened ? 'calc(100vh - 105px)' : 'calc(100vh - 50px)' : undefined }
     ]">
       <div ref="container" class="d-flex h-100 w-100 overflow-auto">
         <v-sheet theme="light" class="animated grid ma-auto" :style="{
-          width: contentWidth,
+          minWidth: contentWidth,
           height: contentHeight,
         }">
           <template v-if="canEdit">
