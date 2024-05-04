@@ -33,9 +33,9 @@ export default createVuetify({
       dark: {
         dark: true,
         colors: {
-          // toolbar: '#FDFDFD',
-          // surface: '#FFFFFF',
-          // background: '#F6F6F6',
+          // toolbar: '#333333',
+          // surface: '#222222',
+          // background: '#111111',
         }
       }
     }

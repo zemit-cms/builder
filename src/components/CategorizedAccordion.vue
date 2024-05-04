@@ -2,51 +2,56 @@
 import { defineModel } from 'vue';
 import { VComboboxProps } from '@/utils/props';
 
-export interface IFieldAccordionProps {
+export interface ICategorizedAccordionProps {
   filterText?: string,
   noItemText?: string,
   filterProps?: VComboboxProps,
   panels?: string[],
 }
 
-export interface IFieldAccordionField<P = {}> {
+export interface ICategorizedAccordionItem {
   category: string,
   name: string,
-  // component: Component,
   component: any, // Bug in Vite.. refuses to recognize Component from vue
-  props?: P
 }
 
-export interface IFieldAccordion {
-  label: string,
-  fields: IFieldAccordionField[]
+export interface ICategorizedAccordionField<P = {}, L = {}> extends ICategorizedAccordionItem {
+  props: P,
+  listeners?: L,
 }
+
+export interface ICategorizedAccordion {
+  label: string,
+  items: ICategorizedAccordionItem[]
+}
+
+defineEmits(['update:panels'])
 
 const query = ref(null);
-const fields = defineModel<IFieldAccordionField[]>({
+const fields = defineModel<ICategorizedAccordionItem[]>({
   required: true
 });
-const props = withDefaults(defineProps<IFieldAccordionProps>(), {
+const props = withDefaults(defineProps<ICategorizedAccordionProps>(), {
   filterText: 'Filter items...',
   noItemText: 'No items found',
   panels: () => ([]),
 });
 const panels = ref(props.panels)
 
-const categories = computed((): IFieldAccordion[] => {
-  const items: IFieldAccordion[] = [];
-  fields.value.filter(field => field.category.toLowerCase().includes(query.value || '')).forEach(field => {
+const categories = computed((): ICategorizedAccordion[] => {
+  const items: ICategorizedAccordion[] = [];
+  fields.value.filter(field => field.name.toLowerCase().includes(query.value || '')).forEach(field => {
     const found = items.find(category => {
-      return category.fields.find(child => {
+      return category.items.find(child => {
         return child.category === field.category;
       });
     });
     if (found) {
-      found.fields.push(field);
+      found.items.push(field);
     } else {
       items.push({
         label: field.category,
-        fields: [field],
+        items: [field],
       })
     }
   })
@@ -87,17 +92,18 @@ const categories = computed((): IFieldAccordion[] => {
         <template #default>
           <div class="d-flex align-center justify-space-between w-100 pr-3">
             <span>{{ category.label }}</span>
-            <v-chip v-if="query !== null" size="x-small">
-              {{ category.fields.length }}
+            <v-chip v-if="query !== null" size="x-small" label class="mb-n1">
+              {{ category.items.length }}
             </v-chip>
           </div>
         </template>
       </v-expansion-panel-title>
       <v-expansion-panel-text>
-        <slot :fields="category.fields">
+        <slot :fields="category.items">
           <component
-            v-for="field in category.fields"
-            v-bind="field.props"
+            v-for="field in category.items"
+            v-bind="field.props || {}"
+            v-on="field.listeners || {}"
             :field="field"
             :key="field.name"
             :is="field.component"

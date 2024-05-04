@@ -30,6 +30,17 @@ export interface IList<T> {
   value: T
 }
 
+export interface IFieldProps<V> {
+  modelValue: V,
+  label: string,
+  description?: string,
+  errorMessage?: string | string[],
+}
+
+export interface IFieldListeners<V> {
+  'update:modelValue': (value: V) => void,
+}
+
 export interface ITab<P = {}> {
   value: string | number,
   label: string | (() => string),

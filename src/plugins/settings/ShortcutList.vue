@@ -1,5 +1,29 @@
 <script setup lang="ts">
-import { shortcutList } from '@/composables/shortcut';
+import { shortcutList } from '@/composables/shortcut'
+import { useSessionStore } from '@/stores/session'
+import { useMagicKeys } from '@vueuse/core/index';
+
+const pressedKeys: Ref<string[]> = ref([]);
+useMagicKeys({
+  passive: false,
+  onEventFired(e) {
+    pressedKeys.value = [];
+    if (e.type === 'keydown') {
+      pressedKeys.value = [e.key.toUpperCase()];
+    }
+  }
+});
+
+const sessionStore = useSessionStore();
+const getHighlightColor = (key: string): string | undefined => {
+  const uKey = key.toUpperCase();
+  return (
+    pressedKeys.value.includes(uKey)
+    || sessionStore.altKeyActivated && uKey === 'ALT'
+    || sessionStore.ctrlKeyActivated && uKey === 'CTRL'
+    || sessionStore.shiftKeyActivated && uKey === 'SHIFT'
+  ) ? 'primary' : undefined;
+}
 </script>
 
 <template>
@@ -9,7 +33,10 @@ import { shortcutList } from '@/composables/shortcut';
       <v-col cols="3" class="d-flex align-center">
         <template v-for="(key, keyIdx) in shortcut.keys" :key="key">
           <span v-if="keyIdx > 0" class="mx-2">+</span>
-          <v-chip label>
+          <v-chip
+            :color="getHighlightColor(key)"
+            label
+          >
             {{ key.toUpperCase() }}
           </v-chip>
         </template>

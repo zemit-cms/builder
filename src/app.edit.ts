@@ -7,6 +7,9 @@
 // Loaders
 import { registerLoaders } from '@/loaders'
 
+// Directives
+import { registerDirectives } from '@/directives'
+
 // Components
 import App from './App.vue'
 
@@ -23,6 +26,7 @@ import '@/styles/index.scss'
 const app = createApp(App)
 
 registerLoaders(app)
+registerDirectives(app)
 useShortcut().bootstrap()
 
 app.mount('#app')

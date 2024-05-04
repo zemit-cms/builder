@@ -1,21 +1,9 @@
-<template>
-  <v-navigation-drawer
-    v-model="store.opened"
-    color="toolbar"
-    permanent
-    location="left"
-  >
-    <ComponentDrawerInner
-      :widgets="widgets"
-    />
-  </v-navigation-drawer>
-</template>
-
 <script lang="ts" setup>
 import { Component } from 'vue'
 import { useStore } from './store'
 import { useShortcut } from '@/composables/shortcut'
 import ComponentDrawerInner from './ComponentDrawerInner.vue'
+import { IResizeContext, IResizeResult, useResize } from '@/composables/resize';
 
 export interface IComponentDrawerWidget {
   category: string,
@@ -40,9 +28,52 @@ shortcut.enable([{
   },
 }]);
 
+let resize: IResizeResult;
+let vMain: HTMLElement | null | undefined;
+const drawer = ref<HTMLElement | null>(null);
+onMounted(() => {
+  const element = drawer.value?.$el.nextElementSibling;
+  resize = useResize(element, {
+    minWidth: 256,
+    maxWidth: 600,
+    directions: ['right'],
+    onStartResize: ()  => {
+      vMain = document.getElementById('app')?.querySelector('.v-main');
+    },
+    onResize: (props: IResizeContext) => {
+      const width = (props.originalWidth.value || 0) + props.deltaX.value;
+      element.style.width = width + 'px';
+      if (vMain) {
+        vMain.style.setProperty('--v-layout-left', width + 'px');
+      }
+    },
+    onStopResize(props: IResizeContext) {
+      store.width = (props.originalWidth.value || 0) + props.deltaX.value;
+    },
+  })
+})
+onUnmounted(() => {
+  resize.destroy();
+})
+
 withDefaults(defineProps<{
   widgets: IComponentDrawerWidget[],
 }>(), {
   widgets: () => ([]),
 })
 </script>
+
+<template>
+  <v-navigation-drawer
+    v-model="store.opened"
+    :width="store.width"
+    color="toolbar"
+    permanent
+    location="left"
+    ref="drawer"
+  >
+    <ComponentDrawerInner
+      :widgets="widgets"
+    />
+  </v-navigation-drawer>
+</template>

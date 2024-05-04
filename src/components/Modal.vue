@@ -1,3 +1,35 @@
+<script lang="ts" setup>
+import { defineModel, useSlots } from 'vue';
+import { VDialogProps } from "@/utils/props";
+
+withDefaults(defineProps<{
+  vDialogProps?: Partial<VDialogProps>,
+  title: string | boolean,
+  icon: string | boolean,
+  showHeader?: boolean,
+  showCloseButton?: boolean,
+  showBody?: boolean,
+  showActions?: boolean,
+  hideHeaderDivider?: boolean,
+  hideFooterDivider?: boolean,
+  defaultBtnText?: string,
+}>(), {
+  vDialogProps: undefined,
+  title: false,
+  icon: false,
+  showHeader: true,
+  showCloseButton: true,
+  showBody: true,
+  showActions: true,
+  hideHeaderDivider: false,
+  hideFooterDivider: false,
+  defaultBtnText: 'Cancel',
+})
+
+const visible = defineModel<boolean>();
+const slots = useSlots();
+</script>
+
 <template>
   <v-dialog
     v-bind="vDialogProps"
@@ -50,7 +82,7 @@
           <slot name="actions">
             <v-btn
               class="text-none"
-              text="Cancel"
+              :text="defaultBtnText"
               @click="visible = false"
             ></v-btn>
           </slot>
@@ -60,37 +92,3 @@
     </v-card>
   </v-dialog>
 </template>
-
-<script lang="ts" setup>
-import { defineModel, useSlots } from 'vue';
-import { VDialogProps } from "@/utils/props";
-
-withDefaults(defineProps<{
-  vDialogProps?: Partial<VDialogProps>,
-  title: string | boolean,
-  icon: string | boolean,
-  showHeader?: boolean,
-  showCloseButton?: boolean,
-  showBody?: boolean,
-  showActions?: boolean,
-  hideHeaderDivider?: boolean,
-  hideFooterDivider?: boolean,
-}>(), {
-  vDialogProps: null,
-  title: false,
-  icon: false,
-  showHeader: true,
-  showCloseButton: true,
-  showBody: true,
-  showActions: true,
-  hideHeaderDivider: false,
-  hideFooterDivider: false,
-})
-
-const visible = defineModel<boolean>();
-const slots = useSlots();
-</script>
-
-<style lang="scss" scoped>
-
-</style>

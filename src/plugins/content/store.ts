@@ -1,19 +1,27 @@
 import { definePluginStore } from '@/stores';
 
-export interface IContentStore {
+export interface IDataStore {
   name: string,
   version: number,
-  widgets: IContentWidget[],
+  widgets: IDataWidget[],
 }
 
-export interface IContentWidget {
+export interface IDataWidget {
   id?: string,
   type: string,
-  children: IContentWidget[],
+  children: IDataWidget[],
 }
 
-export const useStore = definePluginStore<IContentStore>('content', {
+export interface IContentStore {
+  grid: boolean,
+}
+
+export const useContentDataStore = definePluginStore<IDataStore>('content.data', {
   name: '',
   version: 0.1,
   widgets: [],
+})
+
+export const useContentOptionStore = definePluginStore<IContentStore>('content.option', {
+  grid: true,
 })

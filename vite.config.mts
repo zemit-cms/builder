@@ -14,16 +14,16 @@ import { fileURLToPath, URL } from 'node:url'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    VueRouter({
-      dts: 'src/typed-router.d.ts',
-    }),
+    // VueRouter({
+    //   dts: 'src/typed-router.d.ts',
+    // }),
     Layouts(),
     AutoImport({
       imports: [
         'vue',
-        {
-          'vue-router/auto': ['useRoute', 'useRouter'],
-        }
+        // {
+        //   'vue-router/auto': ['useRoute', 'useRouter'],
+        // }
       ],
       dts: 'src/auto-imports.d.ts',
       eslintrc: {

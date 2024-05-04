@@ -10,11 +10,12 @@ declare module 'vue' {
     ActionButton: typeof import('./components/ActionButton.vue')['default']
     Builder: typeof import('./components/Builder.vue')['default']
     ButtonList: typeof import('./components/ButtonList.vue')['default']
+    CategorizedAccordion: typeof import('./components/CategorizedAccordion.vue')['default']
     ComponentDrawer: typeof import('./plugins/component-drawer/ComponentDrawerInner.vue')['default']
     ComponentDrawerInner: typeof import('./plugins/component-drawer/ComponentDrawerInner.vue')['default']
     ContentToolbar: typeof import('@/plugins/content-toolbar/ContentToolbar.vue')['default']
-    FieldAccordion: typeof import('./components/FieldAccordion.vue')['default']
     GroupedCategories: typeof import('./components/GroupedCategories.vue')['default']
+    GroupedItemAccordion: typeof import('./components/GroupedItemAccordion.vue')['default']
     MainToolbar: typeof import('./plugins/toolbar/Toolbar.vue')['default']
     Modal: typeof import('./components/Modal.vue')['default']
     OptionDrawerInner: typeof import('./plugins/option-drawer/OptionDrawerInner.vue')['default']
@@ -22,5 +23,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Settings: typeof import('./components/Settings.vue')['default']
+    SwitchField: typeof import('./components/fields/SwitchField.vue')['default']
+    ToggleField: typeof import('./components/fields/ToggleField.vue')['default']
   }
 }

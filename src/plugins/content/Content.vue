@@ -1,12 +1,16 @@
 <template>
   <div class="d-flex flex-column h-100">
     <Plugins category="content.prepend" />
-    <v-sheet class="animated" color="background" :style="[
+    <v-sheet :class="{ animated }" color="background" :style="[
       'flex: 1',
       { maxHeight: canEdit ? contentToolbarStore.opened ? 'calc(100vh - 105px)' : 'calc(100vh - 50px)' : undefined }
     ]">
       <div ref="container" class="d-flex h-100 w-100 overflow-auto">
-        <v-sheet theme="light" class="animated grid ma-auto" :style="{
+        <v-sheet theme="light" :class="[
+          'ma-auto', {
+          grid: contentOptionStore.grid,
+          animated,
+        }]" :style="{
           minWidth: contentWidth,
           height: contentHeight,
         }">
@@ -36,10 +40,11 @@
 import { ICSSUnit, Mode } from '@/utils/interfaces';
 import { computed, ref } from 'vue';
 import { IContentZoomStyle, useZoom } from '@/composables/zoom';
-import { IContentStore } from './store';
+import { IContentStore, useContentOptionStore } from './store';
 import { useStore as useContentToolbarStore } from '../content-toolbar/store'
 import Plugins from '@/components/Plugins.vue';
 
+const contentOptionStore = useContentOptionStore();
 const mode = import.meta.env.MODE;
 const contentToolbarStore = useContentToolbarStore();
 const container = ref<HTMLDivElement>();
@@ -49,6 +54,7 @@ const {
   getContentZoomStyle,
 } = useZoom();
 
+const animated = ref<boolean>(false);
 const model = defineModel<IContentStore>();
 const zoomStyle = computed((): IContentZoomStyle => getContentZoomStyle());
 const width = computed((): ICSSUnit => getContentWidth(container));
@@ -57,6 +63,8 @@ const contentWidth = computed((): string => width.value.value + width.value.form
 const contentHeight = computed((): string => height.value.value + height.value.format);
 const canEdit = mode === Mode.Edit;
 const iframeUrl = import.meta.env.VITE_VIEW_URL;
+
+setTimeout(() => animated.value = true);
 </script>
 
 <style lang="scss" scoped>
