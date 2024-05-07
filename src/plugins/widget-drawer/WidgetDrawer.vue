@@ -2,24 +2,26 @@
 import { Component } from 'vue'
 import { useStore } from './store'
 import { useShortcut } from '@/composables/shortcut'
-import ComponentDrawerInner from './ComponentDrawerInner.vue'
+import WidgetDrawerInner from './WidgetDrawerInner.vue'
 import { IResizeContext, IResizeResult, useResize } from '@/composables/resize';
 
-export interface IComponentDrawerWidget {
+export interface IWidgetDrawerWidget {
   category: string,
   name: string,
+  icon: string,
+  description: string,
   component: Component,
 }
 
-export interface IComponentDrawerProps {
-  widgets: IComponentDrawerWidget[]
+export interface IWidgetDrawerProps {
+  widgets: IWidgetDrawerWidget[]
 }
 
 const store = useStore();
 const shortcut = useShortcut();
 shortcut.enable([{
-  name: 'component_drawer',
-  description: 'Dock/Undock component drawer',
+  name: 'widget_drawer',
+  description: 'Dock/Undock widget drawer',
   keys: ['alt', 'c'],
   callback: () => {
     store.$patch(state => {
@@ -57,7 +59,7 @@ onUnmounted(() => {
 })
 
 withDefaults(defineProps<{
-  widgets: IComponentDrawerWidget[],
+  widgets: IWidgetDrawerWidget[],
 }>(), {
   widgets: () => ([]),
 })
@@ -72,7 +74,7 @@ withDefaults(defineProps<{
     location="left"
     ref="drawer"
   >
-    <ComponentDrawerInner
+    <WidgetDrawerInner
       :widgets="widgets"
     />
   </v-navigation-drawer>

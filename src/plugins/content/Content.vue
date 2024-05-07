@@ -5,9 +5,11 @@
       'flex: 1',
       { maxHeight: canEdit ? contentToolbarStore.opened ? 'calc(100vh - 105px)' : 'calc(100vh - 50px)' : undefined }
     ]">
-      <div ref="container" class="d-flex h-100 w-100 overflow-auto">
+      <div ref="container" :class="[
+        'd-flex animated h-100 w-100 overflow-auto', {
+      }]">
         <v-sheet theme="light" :class="[
-          'ma-auto', {
+          'ma-auto grid-container', {
           grid: contentOptionStore.grid,
           animated,
         }]" :style="{
@@ -39,6 +41,7 @@
 <script lang="ts" setup>
 import { ICSSUnit, Mode } from '@/utils/interfaces';
 import { computed, ref } from 'vue';
+import { useAppStore } from '@/stores/app'
 import { IContentZoomStyle, useZoom } from '@/composables/zoom';
 import { IContentStore, useContentOptionStore } from './store';
 import { useStore as useContentToolbarStore } from '../content-toolbar/store'
@@ -54,6 +57,7 @@ const {
   getContentZoomStyle,
 } = useZoom();
 
+const appStore = useAppStore();
 const animated = ref<boolean>(false);
 const model = defineModel<IContentStore>();
 const zoomStyle = computed((): IContentZoomStyle => getContentZoomStyle());
@@ -68,9 +72,12 @@ setTimeout(() => animated.value = true);
 </script>
 
 <style lang="scss" scoped>
-.grid {
+.grid-container {
   outline: #E3E3E3 solid 2px;
-  background: repeat linear-gradient(90deg, #E3E3E3 1px, transparent 1px) -1px 0, white;
-  background-size: 8.35% 5px;
+
+  &.grid {
+    background: repeat linear-gradient(90deg, #E3E3E3 1px, transparent 1px) -1px 0, white;
+    background-size: 8.35% 5px;
+  }
 }
 </style>

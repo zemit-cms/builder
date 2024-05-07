@@ -101,21 +101,28 @@ function getReadyToResizeDirections(options: IResizeOptions, props: IMouseInElem
 
 function applyCursorForDirections(directions: Direction[]) {
   if (directions.includes('left') && directions.includes('top')) {
-    document.body.style.cursor = 'nw-resize';
+    document.body.classList.add('cmp-resize-nw-resize');
   } else if (directions.includes('left') && directions.includes('bottom')) {
-    document.body.style.cursor = 'sw-resize';
+    document.body.classList.add('cmp-resize-sw-resize');
   } else if (directions.includes('left')) {
-    document.body.style.cursor = 'col-resize';
+    document.body.classList.add('cmp-resize-col-resize');
   } else if (directions.includes('right') && directions.includes('top')) {
-    document.body.style.cursor = 'ne-resize';
+    document.body.classList.add('cmp-resize-ne-resize');
   } else if (directions.includes('right') && directions.includes('bottom')) {
-    document.body.style.cursor = 'se-resize';
+    document.body.classList.add('cmp-resize-se-resize');
   } else if (directions.includes('right')) {
-    document.body.style.cursor = 'col-resize';
+    document.body.classList.add('cmp-resize-col-resize');
   } else if (directions.includes('top') || directions.includes('bottom')) {
-    document.body.style.cursor = 'row-resize';
+    document.body.classList.add('cmp-resize-row-resize');
   } else {
-    document.body.style.cursor = '';
+    document.body.classList.remove(
+      'cmp-resize-nw-resize',
+      'cmp-resize-sw-resize',
+      'cmp-resize-col-resize',
+      'cmp-resize-ne-resize',
+      'cmp-resize-se-resize',
+      'cmp-resize-row-resize',
+    );
   }
 }
 
@@ -240,14 +247,14 @@ document.addEventListener('mousemove', () => {
   }
   for (let i = 0; i < instances.length; i++) {
     const instance = instances[i];
-
     const directions = getReadyToResizeDirections(instance.options, instance.props, instance.context.currentX.value, instance.context.currentY.value);
     instance.context.canResize.value = directions.length > 0;
     instance.context.activeSides.value = directions;
-    applyCursorForDirections(directions);
 
     if (directions.length > 0) {
-      break;
+      applyCursorForDirections(directions);
+      return;
     }
   }
+  applyCursorForDirections([]);
 })

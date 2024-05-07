@@ -1,12 +1,12 @@
 import { definePluginStore } from '@/stores';
 
-export interface IOptionDrawerStore {
+export interface IContextDrawerStore {
   opened: boolean,
   tab: string | null,
   width: number,
 }
 
-export const useStore = definePluginStore<IOptionDrawerStore>('optionDrawer', {
+export const useStore = definePluginStore<IContextDrawerStore>('contextDrawer', {
   opened: true,
   tab: null,
   width: 256,

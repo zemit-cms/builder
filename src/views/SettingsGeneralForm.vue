@@ -15,7 +15,7 @@ const fields = computed((): ICategorizedAccordionField<ISwitchFieldProps, ISwitc
   props: {
     modelValue: contentOptionStore.grid,
     label: 'Grid view',
-    description: 'Shows a vertical grid of 12 lines above your content. It\'s a visual guide that can help you calculate the column sizing for different resolution such as desktop, tablet and mobile devices.',
+    description: 'Shows a vertical grid of 12 lines above your content. It\'s a visual guide that can help you calculate the column sizing for different resolutions such as desktop, tablet and mobile devices.',
   },
   listeners: {
     'update:modelValue': value => {

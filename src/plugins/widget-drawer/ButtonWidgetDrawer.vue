@@ -12,7 +12,7 @@ function onButtonClick() {
 
 <template>
   <ActionButton :model-value="{
-    tooltip: () => store.opened ? 'Undock component drawer' : 'Dock component drawer',
+    tooltip: () => store.opened ? 'Undock widget drawer' : 'Dock widget drawer',
     icon: 'mdi-dock-left',
     onClick: onButtonClick,
     active: () => store.opened,

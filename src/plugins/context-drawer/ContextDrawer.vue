@@ -7,7 +7,7 @@
     location="right"
     ref="drawer"
   >
-    <OptionDrawerInner
+    <ContextDrawerInner
       :tabs="tabs"
     />
   </v-navigation-drawer>
@@ -15,12 +15,12 @@
 
 <script lang="ts" setup>
 import { useStore } from './store';
-import OptionDrawerInner from './OptionDrawerInner.vue';
+import ContextDrawerInner from './ContextDrawerInner.vue';
 import { useShortcut } from '@/composables/shortcut';
 import { ITab } from '@/utils/interfaces';
 import { IResizeContext, IResizeResult, useResize } from '@/composables/resize';
 
-export interface IOptionDrawerProps {
+export interface IContextDrawerProps {
   tabs?: ITab[],
 }
 
@@ -28,7 +28,7 @@ const store = useStore();
 const shortcut = useShortcut();
 shortcut.enable([{
   name: 'option_drawer',
-  description: 'Dock/Undock option drawer',
+  description: 'Dock/Undock context drawer',
   keys: ['alt', 'o'],
   callback: () => {
     store.$patch(state => {

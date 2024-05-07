@@ -7,13 +7,15 @@ export interface IDataStore {
 }
 
 export interface IDataWidget {
-  id?: string,
+  id: string,
   type: string,
   children: IDataWidget[],
 }
 
 export interface IContentStore {
   grid: boolean,
+  mode: 'select' | 'layout',
+  selectedWidgetIds: string[],
 }
 
 export const useContentDataStore = definePluginStore<IDataStore>('content.data', {
@@ -24,4 +26,6 @@ export const useContentDataStore = definePluginStore<IDataStore>('content.data',
 
 export const useContentOptionStore = definePluginStore<IContentStore>('content.option', {
   grid: true,
+  selectedWidgetIds: [],
+  mode: 'select',
 })
