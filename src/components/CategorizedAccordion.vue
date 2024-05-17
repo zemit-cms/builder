@@ -9,14 +9,16 @@ export interface ICategorizedAccordionProps {
   panels?: string[],
 }
 
-export interface ICategorizedAccordionItem {
+export interface ICategorizedAccordionItem<P = {}, L = {}> {
   category: string,
-  name: string,
-  component: any, // Bug in Vite.. refuses to recognize Component from vue
+  label: string,
+  icon?: string,
+  description?: string,
+  component: any, // Bug in Vite.. refuses to recognize Component from vue,
 }
 
 export interface ICategorizedAccordionField<P = {}, L = {}> extends ICategorizedAccordionItem {
-  props: P,
+  props?: P,
   listeners?: L,
 }
 
@@ -40,7 +42,7 @@ const panels = ref(props.panels)
 
 const categories = computed((): ICategorizedAccordion[] => {
   const items: ICategorizedAccordion[] = [];
-  fields.value.filter(field => field.name.toLowerCase().includes(query.value || '')).forEach(field => {
+  fields.value.filter(field => field.label.toLowerCase().includes(query.value || '')).forEach(field => {
     const found = items.find(category => {
       return category.items.find(child => {
         return child.category === field.category;
@@ -105,7 +107,7 @@ const categories = computed((): ICategorizedAccordion[] => {
             v-bind="field.props || {}"
             v-on="field.listeners || {}"
             :field="field"
-            :key="field.name"
+            :key="field.label"
             :is="field.component"
           />
         </slot>

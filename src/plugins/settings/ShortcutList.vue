@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { shortcutList } from '@/composables/shortcut'
+import { IShortcut, shortcutList } from '@/composables/shortcut'
 import { useSessionStore } from '@/stores/session'
 import { useMagicKeys } from '@vueuse/core/index';
 
@@ -24,10 +24,14 @@ const getHighlightColor = (key: string): string | undefined => {
     || sessionStore.shiftKeyActivated && uKey === 'SHIFT'
   ) ? 'primary' : undefined;
 }
+
+const sortedShortcutList = computed((): IShortcut[] => {
+  return shortcutList.sort((a, b) => a.keys[0] < b.keys[0] ? -1 : 1);
+})
 </script>
 
 <template>
-  <template v-for="(shortcut, shortcutIdx) in shortcutList" :key="shortcut.name">
+  <template v-for="(shortcut, shortcutIdx) in sortedShortcutList" :key="shortcut.name">
     <v-divider v-if="shortcutIdx > 0" class="my-3" />
     <v-row>
       <v-col cols="3" class="d-flex align-center">

@@ -10,17 +10,24 @@ import TextForm from '@/plugins/context-drawer/TextForm.vue';
 import ButtonSettings from '@/plugins/settings/ButtonSettings.vue';
 import ShortcutList from '@/plugins/settings/ShortcutList.vue';
 import SettingsGeneralForm from '@/views/SettingsGeneralForm.vue';
-import Content from '@/plugins/content/Content.vue';
+import Content, { IContentProps } from '@/plugins/content/Content.vue';
 import ButtonContentSelect from '@/plugins/content/ButtonContentSelect.vue';
-import ButtonContentDrag from '@/plugins/content/ButtonContentDrag.vue';
+import ButtonContentLayout from '@/plugins/content/ButtonContentLayout.vue';
+import ButtonContentUndo from '@/plugins/content/ButtonContentUndo.vue';
+import ButtonContentRedo from '@/plugins/content/ButtonContentRedo.vue';
+import ButtonContentSelectSet from '@/plugins/content/ButtonContentSelectSet.vue';
+import ButtonContentLayoutSet from '@/plugins/content/ButtonContentLayoutSet.vue';
 import ContentToolbar, { IContentToolbarProps } from '@/plugins/content-toolbar/ContentToolbar.vue';
 import ButtonContentToolbar from '@/plugins/content-toolbar/ButtonContentToolbar.vue';
 import WidgetDrawer, { IWidgetDrawerProps } from '@/plugins/widget-drawer/WidgetDrawer.vue';
 import ButtonWidgetDrawer from '@/plugins/widget-drawer/ButtonWidgetDrawer.vue';
 import ButtonContentViewMode from '@/plugins/content-toolbar/ButtonContentViewMode.vue';
 import ButtonZoomInOutSelect from '@/plugins/content-toolbar/ButtonZoomInOutSelect.vue';
+import PlugginWrapper, { IPlugginWrapperProps } from '@/components/PluginWrapper.vue';
 import { IButton } from '@/utils/interfaces';
-import { WidgetColumn, WidgetVideo, WidgetText, WidgetImage } from '@/plugins/widget-drawer/widgets/index';
+import { WidgetRow, WidgetColumn, WidgetText, WidgetImage, WidgetVideo } from '@/plugins/widget-drawer/widgets/index';
+import { IDataWidget, useContentDataStore } from '@/plugins/content/store';
+import { declareWidgets } from '@/plugins/content';
 
 const spacer: IButton<any> = { spacer: true };
 const divider: IButton<any> = { divider: true };
@@ -36,7 +43,13 @@ plugins.install<IToolbarProps>({
       ButtonWidgetDrawer,
       divider,
       ButtonContentSelect,
-      ButtonContentDrag,
+      ButtonContentLayout,
+      divider,
+      ButtonContentUndo,
+      ButtonContentRedo,
+      divider,
+      ButtonContentSelectSet,
+      ButtonContentLayoutSet,
       spacer,
       ButtonFullscreen,
       divider,
@@ -66,11 +79,43 @@ plugins.install<IContextDrawerProps>({
   }
 });
 
-plugins.install({
+plugins.install<IPlugginWrapperProps<IContentProps>>({
   name: 'content',
   mode: [Mode.Edit, Mode.View],
-  component: Content,
+  component: PlugginWrapper,
   category: 'root',
+  props: {
+    init: () => {
+      const contentDataStore = useContentDataStore();
+      declareWidgets([
+        { type: 'row', component: WidgetRow },
+        { type: 'column', component: WidgetColumn, onDrop: (data: IDataWidget, parent?: IDataWidget) => {
+          if (parent && parent.type !== 'row') {
+            data.type = 'row';
+          }
+        } },
+        { type: 'text', component: WidgetText, props: {
+          markup: { category: 'text', type: 'select', options: [
+            { label: 'Heading 1', value: 'h1' },
+            { label: 'Heading 2', value: 'h2' },
+            { label: 'Heading 3', value: 'h3' },
+            { label: 'Heading 4', value: 'h4' },
+            { label: 'Heading 5', value: 'h5' },
+            { label: 'Heading 6', value: 'h6' },
+            { label: 'Paragraph', value: 'p' },
+          ] }
+        } },
+        { type: 'image', component: WidgetImage },
+        { type: 'video', component: WidgetVideo },
+      ]);
+      return {
+        is: Content,
+        props: {
+          modelValue: contentDataStore,
+        },
+      }
+    }
+  }
 });
 
 plugins.install<IContentToolbarProps>({
@@ -94,11 +139,29 @@ plugins.install<IWidgetDrawerProps>({
   category: 'root',
   props: {
     widgets: [{
-      category: 'Layout',
-      name: 'Column',
+      type: 'column',
+      label: 'Column',
       icon: 'mdi-view-week',
       description: 'It utilizes flex properties to control the layout and flow of its inner columns.',
-      component: WidgetColumn,
+      category: 'Layout',
+    }, {
+      type: 'text',
+      label: 'Text',
+      icon: 'mdi-format-title',
+      description: 'A versatile text widget capable of serving as a title or paragraph, with customizable styling using CSS.',
+      category: 'Content',
+    }, {
+      type: 'image',
+      label: 'Image',
+      icon: 'mdi-image-outline',
+      description: 'This widget allows users to seamlessly integrate images into their content, enriching the presentation and engaging viewers.',
+      category: 'Content',
+    }, {
+      type: 'video',
+      label: 'Video',
+      icon: 'mdi-video-outline',
+      description: 'This widget allows users to seamlessly embed video content such as tutorials, presentations, or promotional videos within their webpages or documents.',
+      category: 'Content',
     }]
   }
 });

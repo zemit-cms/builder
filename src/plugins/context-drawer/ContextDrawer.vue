@@ -1,24 +1,9 @@
-<template>
-  <v-navigation-drawer
-    v-model="store.opened"
-    :width="store.width"
-    color="toolbar"
-    permanent
-    location="right"
-    ref="drawer"
-  >
-    <ContextDrawerInner
-      :tabs="tabs"
-    />
-  </v-navigation-drawer>
-</template>
-
 <script lang="ts" setup>
 import { useStore } from './store';
-import ContextDrawerInner from './ContextDrawerInner.vue';
 import { useShortcut } from '@/composables/shortcut';
 import { ITab } from '@/utils/interfaces';
-import { IResizeContext, IResizeResult, useResize } from '@/composables/resize';
+import { IResizeContext, useResizeable } from '@/composables/resizeable';
+import ContextDrawerInner from './ContextDrawerInner.vue';
 
 export interface IContextDrawerProps {
   tabs?: ITab[],
@@ -37,12 +22,11 @@ shortcut.enable([{
   },
 }]);
 
-let resize: IResizeResult;
 let vMain: HTMLElement | null | undefined;
 const drawer = ref<HTMLElement | null>(null);
 onMounted(() => {
   const element = drawer.value?.$el.nextElementSibling;
-  resize = useResize(element, {
+  const context = useResizeable(element, {
     minWidth: 256,
     maxWidth: 600,
     directions: ['left'],
@@ -60,9 +44,9 @@ onMounted(() => {
       store.width = (props.originalWidth.value || 0) + props.deltaX.value;
     },
   })
-})
-onUnmounted(() => {
-  resize.destroy();
+  onUnmounted(() => {
+    context.destroy();
+  })
 })
 
 withDefaults(defineProps<{
@@ -71,3 +55,25 @@ withDefaults(defineProps<{
   tabs: () => ([]),
 })
 </script>
+
+<template>
+  <v-navigation-drawer
+    v-model="store.opened"
+    :width="store.width"
+    id="context-drawer"
+    color="toolbar"
+    permanent
+    location="right"
+    ref="drawer"
+  >
+    <ContextDrawerInner
+      :tabs="tabs"
+    />
+  </v-navigation-drawer>
+</template>
+
+<style lang="scss">
+#context-drawer * {
+  user-select: none;
+}
+</style>

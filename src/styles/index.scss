@@ -10,30 +10,3 @@ html, body {
     max-height ease-in-out 150ms,
     padding ease-in-out 150ms;
 }
-
-
-body.cmp-resize-nw-resize { cursor: nw-resize !important; }
-body.cmp-resize-sw-resize { cursor: sw-resize !important; }
-body.cmp-resize-col-resize { cursor: col-resize !important; }
-body.cmp-resize-ne-resize { cursor: ne-resize !important; }
-body.cmp-resize-se-resize { cursor: se-resize !important; }
-body.cmp-resize-row-resize { cursor: row-resize !important; }
-
-body.cmp-resize-active * {
-  transition-duration: 0s !important;
-  user-select: none !important;
-  pointer-events: none !important;
-}
-body.draggable,
-body.cmp-drag-active,
-body.cmp-drag-active * {
-  user-select: none !important;
-  cursor: grab !important;
-}
-.draggable-ghost {
-  display: none;
-}
-//.cpm-resize-current-active,
-//.cpm-resize-current-active > * {
-//  overflow: hidden;
-//}

@@ -53,6 +53,7 @@ function getValue(value: any) {
         <v-icon v-if="button.icon">
           {{ getValue(button.icon) }}
         </v-icon>
+        <span v-if="button.label">{{ button.label }}</span>
       </v-btn>
     </template>
   </v-tooltip>

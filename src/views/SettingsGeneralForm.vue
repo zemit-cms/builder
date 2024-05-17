@@ -10,7 +10,7 @@ const store = useStore();
 const contentOptionStore = useContentOptionStore();
 const fields = computed((): ICategorizedAccordionField<ISwitchFieldProps, ISwitchFieldListeners>[] => ([{
   category: 'View',
-  name: 'Grid view',
+  label: 'Grid view',
   component: SwitchField,
   props: {
     modelValue: contentOptionStore.grid,

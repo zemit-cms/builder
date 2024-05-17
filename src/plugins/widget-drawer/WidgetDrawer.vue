@@ -1,16 +1,15 @@
 <script lang="ts" setup>
-import { Component } from 'vue'
 import { useStore } from './store'
 import { useShortcut } from '@/composables/shortcut'
+import { IResizeContext, useResizeable } from '@/composables/resizeable';
 import WidgetDrawerInner from './WidgetDrawerInner.vue'
-import { IResizeContext, IResizeResult, useResize } from '@/composables/resize';
 
 export interface IWidgetDrawerWidget {
   category: string,
-  name: string,
+  type: string,
+  label: string,
   icon: string,
   description: string,
-  component: Component,
 }
 
 export interface IWidgetDrawerProps {
@@ -30,12 +29,11 @@ shortcut.enable([{
   },
 }]);
 
-let resize: IResizeResult;
 let vMain: HTMLElement | null | undefined;
 const drawer = ref<HTMLElement | null>(null);
 onMounted(() => {
   const element = drawer.value?.$el.nextElementSibling;
-  resize = useResize(element, {
+  const context = useResizeable(element, {
     minWidth: 256,
     maxWidth: 600,
     directions: ['right'],
@@ -53,9 +51,9 @@ onMounted(() => {
       store.width = (props.originalWidth.value || 0) + props.deltaX.value;
     },
   })
-})
-onUnmounted(() => {
-  resize.destroy();
+  onUnmounted(() => {
+    context.destroy();
+  })
 })
 
 withDefaults(defineProps<{
@@ -69,6 +67,7 @@ withDefaults(defineProps<{
   <v-navigation-drawer
     v-model="store.opened"
     :width="store.width"
+    id="widget-drawer"
     color="toolbar"
     permanent
     location="left"
@@ -79,3 +78,9 @@ withDefaults(defineProps<{
     />
   </v-navigation-drawer>
 </template>
+
+<style lang="scss">
+#widget-drawer * {
+  user-select: none;
+}
+</style>

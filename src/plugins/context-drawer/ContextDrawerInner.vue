@@ -1,3 +1,24 @@
+<script lang="ts" setup>
+import { ITab } from '@/utils/interfaces';
+import { useStore } from '@/plugins/context-drawer/store';
+import { useContentDataStore, useContentOptionStore, useContentSessionStore } from '@/plugins/content/store';
+
+const store = useStore();
+const props = withDefaults(defineProps<{
+  tabs: ITab[],
+}>(), {
+  tabs: () => ([]),
+})
+const activeTabs = computed((): ITab[] => {
+  // const contentDataStore = useContentDataStore();
+  // const contentSessionStore = useContentSessionStore();
+  // const declaration = contentSessionStore.declarations.find(declaration => declaration.type === options.data.type);
+  return useContentOptionStore().selectedWidgetIds.length > 0
+    && props.tabs || [];
+})
+
+</script>
+
 <template>
   <v-alert
     v-if="activeTabs.length === 0"
@@ -33,20 +54,3 @@
     </v-window>
   </template>
 </template>
-
-<script lang="ts" setup>
-import { ITab } from '@/utils/interfaces';
-import { useStore } from '@/plugins/context-drawer/store';
-import { getSelectedWidgetIds } from '@/plugins/content';
-
-const store = useStore();
-const props = withDefaults(defineProps<{
-  tabs: ITab[],
-}>(), {
-  tabs: () => ([]),
-})
-const activeTabs = computed((): ITab[] => {
-  return getSelectedWidgetIds().length > 0
-    && props.tabs || [];
-})
-</script>

@@ -101,27 +101,27 @@ function getReadyToResizeDirections(options: IResizeOptions, props: IMouseInElem
 
 function applyCursorForDirections(directions: Direction[]) {
   if (directions.includes('left') && directions.includes('top')) {
-    document.body.classList.add('cmp-resize-nw-resize');
+    document.body.classList.add('cmp-resizeable-nw-resize');
   } else if (directions.includes('left') && directions.includes('bottom')) {
-    document.body.classList.add('cmp-resize-sw-resize');
+    document.body.classList.add('cmp-resizeable-sw-resize');
   } else if (directions.includes('left')) {
-    document.body.classList.add('cmp-resize-col-resize');
+    document.body.classList.add('cmp-resizeable-col-resize');
   } else if (directions.includes('right') && directions.includes('top')) {
-    document.body.classList.add('cmp-resize-ne-resize');
+    document.body.classList.add('cmp-resizeable-ne-resize');
   } else if (directions.includes('right') && directions.includes('bottom')) {
-    document.body.classList.add('cmp-resize-se-resize');
+    document.body.classList.add('cmp-resizeable-se-resize');
   } else if (directions.includes('right')) {
-    document.body.classList.add('cmp-resize-col-resize');
+    document.body.classList.add('cmp-resizeable-col-resize');
   } else if (directions.includes('top') || directions.includes('bottom')) {
-    document.body.classList.add('cmp-resize-row-resize');
+    document.body.classList.add('cmp-resizeable-row-resize');
   } else {
     document.body.classList.remove(
-      'cmp-resize-nw-resize',
-      'cmp-resize-sw-resize',
-      'cmp-resize-col-resize',
-      'cmp-resize-ne-resize',
-      'cmp-resize-se-resize',
-      'cmp-resize-row-resize',
+      'cmp-resizeable-nw-resize',
+      'cmp-resizeable-sw-resize',
+      'cmp-resizeable-col-resize',
+      'cmp-resizeable-ne-resize',
+      'cmp-resizeable-se-resize',
+      'cmp-resizeable-row-resize',
     );
   }
 }
@@ -146,8 +146,8 @@ function startResizing(props: IMouseInElement, options: IResizeOptions, context:
       options.onStartResize(context);
     }
 
-    document.body.classList.add('cmp-resize-active');
-    element.classList.add('cpm-resize-current-active');
+    document.body.classList.add('cmp-resizeable-active');
+    element.classList.add('cpm-resizeable-current-active');
   }
 }
 
@@ -180,17 +180,17 @@ function onStopResizing(props: IMouseInElement, options: IResizeOptions, context
 
   context.isResizing.value = false;
   applyCursorForDirections(context.activeSides.value || []);
-  document.body.classList.remove('cmp-resize-active');
-  element.classList.remove('cpm-resize-current-active');
+  document.body.classList.remove('cmp-resizeable-active');
+  element.classList.remove('cpm-resizeable-current-active');
 
   if (options.onStopResize instanceof Function) {
     options.onStopResize(context);
   }
 }
 
-export function useResize(
+export function useResizeable(
   element: HTMLElement,
-  options: IResizeOptions
+  options: IResizeOptions = {}
 ): IResizeResult {
   const props: IMouseInElement = useMouseInElement(element);
   const context: IResizeContext = {

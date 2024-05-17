@@ -1,0 +1,12 @@
+body.cmp-resizeable-nw-resize { cursor: nw-resize !important; }
+body.cmp-resizeable-sw-resize { cursor: sw-resize !important; }
+body.cmp-resizeable-col-resize { cursor: col-resize !important; }
+body.cmp-resizeable-ne-resize { cursor: ne-resize !important; }
+body.cmp-resizeable-se-resize { cursor: se-resize !important; }
+body.cmp-resizeable-row-resize { cursor: row-resize !important; }
+
+body.cmp-resizeable-active * {
+  transition-duration: 0s !important;
+  user-select: none !important;
+  pointer-events: none !important;
+}

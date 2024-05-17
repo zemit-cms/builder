@@ -22,6 +22,9 @@ import { useShortcut } from '@/composables/shortcut';
 
 // Stylesheets
 import '@/styles/index.scss'
+import '@/styles/composable-draggable.scss'
+import '@/styles/composable-droppable.scss'
+import '@/styles/composable-resizeable.scss'
 
 const app = createApp(App)
 

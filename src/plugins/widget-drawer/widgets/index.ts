@@ -1,9 +1,11 @@
+import WidgetRow from './WidgetRow.vue'
 import WidgetColumn from './WidgetColumn.vue'
-import WidgetImage from './WidgetColumn.vue'
-import WidgetText from './WidgetColumn.vue'
-import WidgetVideo from './WidgetColumn.vue'
+import WidgetImage from './WidgetImage.vue'
+import WidgetText from './WidgetText.vue'
+import WidgetVideo from './WidgetVideo.vue'
 
 export {
+  WidgetRow,
   WidgetColumn,
   WidgetImage,
   WidgetText,

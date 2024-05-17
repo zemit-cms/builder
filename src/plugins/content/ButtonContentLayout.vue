@@ -6,11 +6,11 @@ const contentOptionStore = useContentOptionStore();
 
 <template>
   <ActionButton :model-value="{
-    tooltip: () => 'Select content',
-    icon: 'mdi-cursor-default-outline',
-    active: () => contentOptionStore.mode === 'select',
+    tooltip: () => 'Adjust layout',
+    icon: 'mdi-format-paint',
+    active: () => contentOptionStore.mode === 'layout',
     onClick: () => {
-      contentOptionStore.$patch(state => state.mode = 'select');
+      contentOptionStore.$patch(state => state.mode = 'layout');
     }
   }" />
 </template>

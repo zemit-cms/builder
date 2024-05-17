@@ -1,13 +1,3 @@
-<template>
-  <component
-    v-for="plugin in pluginList"
-    v-bind="plugin.props"
-    v-on="plugin.listeners"
-    :key="plugin.name"
-    :is="plugin.component"
-  ></component>
-</template>
-
 <script lang="ts" setup>
 import { usePlugin } from '@/composables/plugin';
 
@@ -32,3 +22,13 @@ const pluginList = plugins.getAll(props.category).map(plugin => {
   return item;
 });
 </script>
+
+<template>
+  <component
+    v-for="plugin in pluginList"
+    v-bind="plugin.props"
+    v-on="plugin.listeners"
+    :key="plugin.name"
+    :is="plugin.component"
+  ></component>
+</template>

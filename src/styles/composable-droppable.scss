@@ -1,0 +1,51 @@
+body.cmp-draggable-dragging {
+  #content *:not(.cmp-droppable) {
+    pointer-events: none !important;
+  }
+}
+
+.cmp-droppable {
+  position: relative;
+  transition: min-height 150ms ease-in-out;
+  pointer-events: auto !important;
+
+  .cmp-droppable-overlay {
+    transition: all 150ms ease-in-out;
+    background-color: rgba(var(--v-theme-primary), 0.2);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0;
+
+    .dashed {
+      transition: all 150ms ease-in-out;
+      border: rgba(255, 255, 255, 0.25) dashed 0.5em;
+      border-radius: 2em;
+      width: 50%;
+      height: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+    }
+  }
+
+  &.active {
+    .cmp-droppable-overlay {
+      opacity: 1;
+    }
+  }
+
+  &.overlay {
+    .cmp-droppable-overlay {
+      .dashed {
+        border-color: rgba(255, 255, 255, 0.5);
+        height: calc(100% - 0.5em);
+        width: calc(100% - 0.5em);
+      }
+    }
+  }
+}

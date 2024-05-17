@@ -75,6 +75,7 @@ shortcut.enable([{
 
 <template>
   <div
+    id="content-toolbar"
     :style="[
       { height: store.opened ? 57 : 0 }
     ]"
@@ -86,3 +87,9 @@ shortcut.enable([{
     </v-toolbar>
   </div>
 </template>
+
+<style lang="scss">
+#content-toolbar * {
+  user-select: none;
+}
+</style>

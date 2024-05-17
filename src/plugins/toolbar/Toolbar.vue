@@ -1,17 +1,6 @@
-<template>
-  <v-app-bar
-    flat
-    density="compact"
-    location="top"
-    color="toolbar"
-    style="border-bottom: rgba(var(--v-border-color), var(--v-border-opacity)) solid 1px"
-  >
-    <ButtonList :model-value="buttons" />
-  </v-app-bar>
-</template>
-
 <script lang="ts" setup>
 import { Component } from 'vue'
+import { IButton } from '@/utils/interfaces';
 import ButtonList from '@/components/ButtonList.vue'
 
 export interface IToolbarProps {
@@ -24,3 +13,23 @@ withDefaults(defineProps<{
   buttons: () => ([]),
 })
 </script>
+
+<template>
+  <v-app-bar
+    id="toolbar"
+    flat
+    density="compact"
+    location="top"
+    color="toolbar"
+    style="border-bottom: rgba(var(--v-border-color), var(--v-border-opacity)) solid 1px"
+  >
+    <ButtonList :model-value="buttons" />
+  </v-app-bar>
+</template>
+
+
+<style lang="scss">
+#toolbar * {
+  user-select: none;
+}
+</style>

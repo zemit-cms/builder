@@ -34,6 +34,8 @@ const slots = useSlots();
   <v-dialog
     v-bind="vDialogProps"
     v-model="visible"
+    @mousedown.stop
+    @mousemove.stop
   >
     <v-card>
       <template v-if="showHeader">
