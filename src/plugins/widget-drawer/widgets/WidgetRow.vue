@@ -1,26 +1,20 @@
 <script setup lang="ts">
-import { IDataWidget, useContentDataStore } from '@/plugins/content/store';
-import WidgetModel, { useWidget } from '@/plugins/content';
-import Widget from '@/plugins/content/Widget.vue';
+import { useWidget } from '@/plugins/content/composables';
 import Hash from '@/utils/hash';
+import WidgetModel from '@/plugins/content/models/widget.model';
 
-const widget = defineModel<IDataWidget>({ required: true });
+const widget = defineModel<WidgetModel>({ required: true });
 const { attrs, listeners } = useWidget(widget.value);
 
 function injectColumns(amount: number) {
-  const contentDataStore = useContentDataStore();
-  contentDataStore.$patch(state => {
-    widget.value.children.push({
+  for (let i = 0; i < amount; i++) {
+    widget.value.children.push(new WidgetModel({
       id: Hash.guid(),
-      version: 1,
       type: 'column',
       children: [],
-    });
-  })
-  for (let i = 0; i < amount; i++) {
-
+      props: {},
+    }, widget.value));
   }
-  new WidgetModel(widget.value).save();
 }
 </script>
 
@@ -30,10 +24,7 @@ function injectColumns(amount: number) {
     v-on="listeners"
     class="pa-3"
   >
-    <slot></slot>
-    <v-row
-      v-bind="widget.props"
-    >
+    <v-row v-bind="widget.props">
       <template v-if="widget.children.length === 0">
         <v-col
           v-for="amount in 12"
@@ -53,12 +44,7 @@ function injectColumns(amount: number) {
           </v-btn>
         </v-col>
       </template>
-      <Widget
-        v-else
-        v-for="child in widget.children"
-        :model-value="child"
-        :key="child.id"
-      />
+      <slot></slot>
     </v-row>
   </v-container>
 </template>

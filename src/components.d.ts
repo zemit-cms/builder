@@ -16,6 +16,7 @@ declare module 'vue' {
     ContextDrawerInner: typeof import('./plugins/context-drawer/ContextDrawerInner.vue')['default']
     Draggable: typeof import('./components/Draggable.vue')['default']
     Droppable: typeof import('./components/Droppable.vue')['default']
+    EmptyComponent: typeof import('./components/EmptyComponent.vue')['default']
     GroupedCategories: typeof import('./components/GroupedCategories.vue')['default']
     GroupedItemAccordion: typeof import('./components/GroupedItemAccordion.vue')['default']
     MainToolbar: typeof import('./plugins/toolbar/Toolbar.vue')['default']

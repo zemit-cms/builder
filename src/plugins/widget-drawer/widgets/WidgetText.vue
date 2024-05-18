@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useWidget } from '@/plugins/content';
-import { IDataWidget } from '@/plugins/content/store';
+import { useWidget } from '@/plugins/content/composables';
+import WidgetModel from '@/plugins/content/models/widget.model';
 
-const widget = defineModel<IDataWidget<{
+export interface IWidgetTextProps {
   markup: string
-}>>({
-  required: true,
-});
+}
+
+const widget = defineModel<WidgetModel<IWidgetTextProps>>({ required: true });
 const { attrs, listeners } = useWidget(widget.value);
 </script>
 

@@ -6,7 +6,7 @@ export interface IToolbarSettingsStore {
   panels: string[],
 }
 
-export const useStore = definePluginStore<IToolbarSettingsStore>('settings', {
+export const useSettingsStore = definePluginStore<IToolbarSettingsStore>('settings', {
   opened: false,
   tab: null,
   panels: [],

@@ -2,68 +2,38 @@
 import { ICSSUnit, Mode } from '@/utils/interfaces';
 import { computed, ref } from 'vue';
 import { useZoom } from '@/composables/zoom';
-import { IDataStore, IDataWidget, useContentDataStore, useContentOptionStore, useContentSessionStore } from './store';
-import { useStore as useContentToolbarStore } from '../content-toolbar/store'
-import { IDraggableOptions } from '@/composables/draggable';
+import { useContentToolbarStore } from '../content-toolbar/store'
+import { onDropWidget, useContentShortcuts, useRootModel } from './composables'
 import { useHistory } from '@/composables/history';
-import { useContentShortcuts } from './shortcuts'
 import Droppable from '@/components/Droppable.vue';
 import Plugins from '@/components/Plugins.vue';
-import Widget from '@/plugins/content/Widget.vue';
+import Widget from '@/plugins/content/components/Widget.vue'
+import { IDataWidget } from '@/plugins/content/store';
 
-export interface IContentProps {
-  modelValue: IDataStore
-}
+export interface IContentProps {}
 
-const model = defineModel<IDataStore>({
-  required: true
-});
-
-const contentOptionStore = useContentOptionStore();
-const contentDataStore = useContentDataStore();
-const contentSessionStore = useContentSessionStore();
-useHistory<IDataStore>('content', contentDataStore);
-useContentShortcuts();
-
+const widget = useRootModel();
 const mode = import.meta.env.MODE;
 const contentToolbarStore = useContentToolbarStore();
 const container = ref<HTMLDivElement>();
+const animated = ref<boolean>(false);
+const contentWidth = computed((): string => width.value.value + width.value.format);
+const contentHeight = computed((): string => height.value.value + height.value.format);
+const canEdit = mode === Mode.Edit;
+// const zoomStyle = computed((): IContentZoomStyle => getContentZoomStyle());
+// const iframeUrl = import.meta.env.VITE_VIEW_URL;
+useHistory<IDataWidget>('content', widget);
+useContentShortcuts();
+
 const {
   getContentWidth,
   getContentHeight,
   // getContentZoomStyle,
 } = useZoom();
-
-// const appStore = useAppStore();
-const animated = ref<boolean>(false);
-// const zoomStyle = computed((): IContentZoomStyle => getContentZoomStyle());
 const width = computed((): ICSSUnit => getContentWidth(container));
 const height = computed((): ICSSUnit => getContentHeight(container));
-const contentWidth = computed((): string => width.value.value + width.value.format);
-const contentHeight = computed((): string => height.value.value + height.value.format);
-const canEdit = mode === Mode.Edit;
-// const iframeUrl = import.meta.env.VITE_VIEW_URL;
 
 setTimeout(() => animated.value = true);
-
-function onEmptyClick() {
-  contentOptionStore.$patch(state => {
-    state.selectedWidgetIds = [];
-  })
-}
-
-function onDrop(options: IDraggableOptions<IDataWidget>) {
-  contentDataStore.$patch(state => {
-    if (options.data) {
-      const declaration = contentSessionStore.declarations.find(declaration => declaration.type === options.data?.type);
-      if (declaration?.onDrop instanceof Function) {
-        declaration.onDrop(options.data, state.root)
-      }
-      state.root.children.push(options.data);
-      contentOptionStore.selectedWidgetIds = [options.data.id];
-    }
-  })
-}
 </script>
 
 <template>
@@ -77,8 +47,7 @@ function onDrop(options: IDraggableOptions<IDataWidget>) {
         'd-flex animated h-100 w-100 overflow-auto', {
       }]">
         <v-sheet theme="light" :class="[
-          'ma-auto grid-container d-flex flex-column', {
-          grid: contentOptionStore.grid,
+          'ma-auto content-container d-flex flex-column grid', {
           animated,
         }]" :style="{
           minWidth: contentWidth,
@@ -86,17 +55,12 @@ function onDrop(options: IDraggableOptions<IDataWidget>) {
         }">
           <template v-if="canEdit">
             <div style="flex: 0">
-              <Widget
-                v-for="widget in model.root.children"
-                :model-value="widget"
-                :key="widget.id"
-              />
+              <Widget v-model="widget" />
             </div>
             <Droppable
-              class="h-100 w-100"
               style="flex: 1"
-              @drop="onDrop"
-              @click="onEmptyClick"
+              @drop="options => onDropWidget(options, widget)"
+              @click="() => widget.forEach(widget => widget.unselect())"
             />
             <!--            <iframe :src="iframeUrl" class="animated border-0" :style="{-->
             <!--              ...zoomStyle,-->
@@ -110,9 +74,7 @@ function onDrop(options: IDraggableOptions<IDataWidget>) {
           <Widget
             v-else
             v-once
-            v-for="widget in model.root.children"
-            :model-value="widget"
-            :key="widget.id"
+            v-model="widget"
             read-only
           />
         </v-sheet>
@@ -129,7 +91,7 @@ function onDrop(options: IDraggableOptions<IDataWidget>) {
 </style>
 
 <style lang="scss" scoped>
-.grid-container {
+.content-container {
   outline: #E3E3E3 solid 2px;
 
   &.grid {

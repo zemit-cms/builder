@@ -2,32 +2,33 @@ import { Mode } from '@/utils/enums';
 import { usePlugin } from '@/composables/plugin';
 import Settings, { ISettingsProps } from '@/plugins/settings/Settings.vue';
 import Toolbar, { IToolbarProps } from '@/plugins/toolbar/Toolbar.vue';
-import ButtonFullscreen from '@/plugins/toolbar/ButtonFullscreen.vue';
+import ButtonFullscreen from '@/plugins/toolbar/buttons/ButtonFullscreen.vue';
 import ContextDrawer, { IContextDrawerProps } from '@/plugins/context-drawer/ContextDrawer.vue';
-import ButtonContextDrawer from '@/plugins/context-drawer/ButtonContextDrawer.vue';
-import StyleForm from '@/plugins/context-drawer/StyleForm.vue';
-import TextForm from '@/plugins/context-drawer/TextForm.vue';
-import ButtonSettings from '@/plugins/settings/ButtonSettings.vue';
-import ShortcutList from '@/plugins/settings/ShortcutList.vue';
+import ButtonContextDrawer from '@/plugins/context-drawer/buttons/ButtonContextDrawer.vue';
+import StyleForm from '@/plugins/context-drawer/components/StyleForm.vue';
+import TextForm from '@/plugins/context-drawer/components/TextForm.vue';
+import LayerView from '@/plugins/context-drawer/components/LayerView.vue';
+import ButtonSettings from '@/plugins/settings/buttons/ButtonSettings.vue';
+import ShortcutList from '@/plugins/settings/components/ShortcutList.vue';
 import SettingsGeneralForm from '@/views/SettingsGeneralForm.vue';
 import Content, { IContentProps } from '@/plugins/content/Content.vue';
-import ButtonContentSelect from '@/plugins/content/ButtonContentSelect.vue';
-import ButtonContentLayout from '@/plugins/content/ButtonContentLayout.vue';
-import ButtonContentUndo from '@/plugins/content/ButtonContentUndo.vue';
-import ButtonContentRedo from '@/plugins/content/ButtonContentRedo.vue';
-import ButtonContentSelectSet from '@/plugins/content/ButtonContentSelectSet.vue';
-import ButtonContentLayoutSet from '@/plugins/content/ButtonContentLayoutSet.vue';
+import ButtonContentSelect from '@/plugins/content/buttons/ButtonContentSelect.vue';
+import ButtonContentLayout from '@/plugins/content/buttons/ButtonContentLayout.vue';
+import ButtonContentUndo from '@/plugins/content/buttons/ButtonContentUndo.vue';
+import ButtonContentRedo from '@/plugins/content/buttons/ButtonContentRedo.vue';
+import ButtonContentSelectSet from '@/plugins/content/buttons/ButtonContentSelectSet.vue';
+import ButtonContentLayoutSet from '@/plugins/content/buttons/ButtonContentLayoutSet.vue';
 import ContentToolbar, { IContentToolbarProps } from '@/plugins/content-toolbar/ContentToolbar.vue';
-import ButtonContentToolbar from '@/plugins/content-toolbar/ButtonContentToolbar.vue';
+import ButtonContentToolbar from '@/plugins/content-toolbar/buttons/ButtonContentToolbar.vue';
 import WidgetDrawer, { IWidgetDrawerProps } from '@/plugins/widget-drawer/WidgetDrawer.vue';
-import ButtonWidgetDrawer from '@/plugins/widget-drawer/ButtonWidgetDrawer.vue';
-import ButtonContentViewMode from '@/plugins/content-toolbar/ButtonContentViewMode.vue';
-import ButtonZoomInOutSelect from '@/plugins/content-toolbar/ButtonZoomInOutSelect.vue';
+import ButtonWidgetDrawer from '@/plugins/widget-drawer/buttons/ButtonWidgetDrawer.vue';
+import ButtonContentViewMode from '@/plugins/content-toolbar/buttons/ButtonContentViewMode.vue';
+import ButtonZoomInOutSelect from '@/plugins/content-toolbar/buttons/ButtonZoomInOutSelect.vue';
 import PlugginWrapper, { IPlugginWrapperProps } from '@/components/PluginWrapper.vue';
 import { IButton } from '@/utils/interfaces';
 import { WidgetRow, WidgetColumn, WidgetText, WidgetImage, WidgetVideo } from '@/plugins/widget-drawer/widgets/index';
-import { IDataWidget, useContentDataStore } from '@/plugins/content/store';
-import { declareWidgets } from '@/plugins/content';
+import { IDataWidget } from '@/plugins/content/store';
+import { declareWidgets } from '@/plugins/content/composables';
 
 const spacer: IButton<any> = { spacer: true };
 const divider: IButton<any> = { divider: true };
@@ -75,6 +76,10 @@ plugins.install<IContextDrawerProps>({
       value: 'text',
       label: 'Text',
       component: TextForm,
+    }, {
+      value: 'layer',
+      label: 'Layers',
+      component: LayerView,
     }]
   }
 });
@@ -86,7 +91,6 @@ plugins.install<IPlugginWrapperProps<IContentProps>>({
   category: 'root',
   props: {
     init: () => {
-      const contentDataStore = useContentDataStore();
       declareWidgets([
         { type: 'row', component: WidgetRow },
         { type: 'column', component: WidgetColumn, onDrop: (data: IDataWidget, parent?: IDataWidget) => {
@@ -110,9 +114,7 @@ plugins.install<IPlugginWrapperProps<IContentProps>>({
       ]);
       return {
         is: Content,
-        props: {
-          modelValue: contentDataStore,
-        },
+        props: {},
       }
     }
   }

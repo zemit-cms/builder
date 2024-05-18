@@ -1,12 +1,11 @@
-import { Store } from 'pinia';
+import Model from '@/composables/model';
 
 export type IHistory<T = {}> = T[]
 
 export interface IHistoryReturn<T = {}> {
-  _skip: Ref<boolean>
+  _skip: boolean,
   history: Ref<IHistory<T>>
-  store: Store<string, Record<string, T>> | null
-  current: Ref<T>
+  reference: Ref<Model>
   index: Ref<number>
   canUndo: Ref<boolean>
   canRedo: Ref<boolean>
@@ -19,84 +18,72 @@ export interface IHistoryReturn<T = {}> {
 const memory: {[key: string]: IHistoryReturn<any>} = {}
 
 // @ts-ignore
-export function useHistory<T>(key: string, store?: Store<string, Record<string, T>>): IHistoryReturn<T> {
-
-  function updateObject(obj: any, data: any) {
-    Object.keys(obj).forEach(key => {
-      if (!data[key]) {
-        delete obj[key];
-      }
-    });
-    Object.assign(obj, data);
-  }
+export function useHistory<T>(
+  key: string,
+  model: Ref<Model<T>> | null = null,
+): IHistoryReturn<Model<T>> {
 
   if (!memory[key]) {
     memory[key] = {
-      _skip: ref(false),
+      _skip: false,
       history: ref([]),
       index: ref(0),
-      store: null,
-      current: ref(null),
+      reference: ref(new Model()),
       canUndo: ref(false),
       canRedo: ref(false),
-      init: (store: Store<string, Record<string, T>>) => {
-        memory[key].history.value = [JSON.parse(JSON.stringify(store.$state))];
+      init: (value: Ref<Model>) => {
         memory[key].index.value = 0;
         memory[key].canRedo.value = false;
         memory[key].canUndo.value = false;
-        memory[key].store = store;
-        memory[key].current.value = memory[key].history.value[0];
+        memory[key].reference = value;
+        memory[key].history.value = [value.value.clone(false).data];
 
-        store.$subscribe((mutation, state) => {
-          if (!memory[key]._skip.value) {
-            memory[key].commit(state, true);
+        watch(value, (newValue) => {
+          if (!memory[key]._skip) {
+            memory[key].commit(newValue.clone(false).data);
           }
-        })
+        }, { deep: true });
       },
-      commit: (data: T, clone = false) => {
+      commit: (data: T) => {
         memory[key].history.value.splice(memory[key].index.value + 1, memory[key].history.value.length)
-        memory[key].history.value.push(clone ? JSON.parse(JSON.stringify(data)) : data);
-
-        memory[key].index.value = memory[key].history.value.length - 1;
+        memory[key].history.value.push(data);
         memory[key].canRedo.value = false;
         memory[key].canUndo.value = memory[key].index.value > 0;
-        memory[key].current.value = memory[key].history.value[memory[key].index.value];
+        memory[key].index.value = memory[key].history.value.length - 1;
       },
       undo: () => {
-        memory[key]._skip.value = true;
         if (memory[key].canUndo.value) {
+          memory[key]._skip = true;
           memory[key].index.value--;
           memory[key].canUndo.value = memory[key].index.value > 0;
           memory[key].canRedo.value = true;
 
-          const data = JSON.parse(JSON.stringify(memory[key].history.value[memory[key].index.value]));
-          memory[key].current.value = memory[key].history.value[memory[key].index.value];
-          memory[key].store?.$patch(state => {
-            updateObject(state, data);
+          const current = memory[key].history.value[memory[key].index.value];
+          memory[key].reference.value.assign(current);
+          setTimeout(() => {
+            memory[key]._skip = false;
           })
         }
-        memory[key]._skip.value = false;
       },
       redo: () => {
-        memory[key]._skip.value = true;
         if (memory[key].canRedo.value) {
+          memory[key]._skip = true;
           memory[key].index.value++;
           memory[key].canRedo.value = memory[key].index.value < memory[key].history.value.length - 1;
           memory[key].canUndo.value = true;
 
-          const data = JSON.parse(JSON.stringify(memory[key].history.value[memory[key].index.value]));
-          memory[key].current.value = memory[key].history.value[memory[key].index.value];
-          memory[key].store?.$patch(state => {
-            updateObject(state, data);
+          const current = memory[key].history.value[memory[key].index.value];
+          memory[key].reference.value.assign(current);
+          setTimeout(() => {
+            memory[key]._skip = false;
           })
         }
-        memory[key]._skip.value = false;
       },
     };
   }
 
-  if (store) {
-    memory[key].init(store);
+  if (model) {
+    memory[key].init(model);
   }
 
   return memory[key]

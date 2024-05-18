@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useShortcut } from '@/composables/shortcut';
-import { useStore } from '@/plugins/settings/store';
+import { useSettingsStore } from '@/plugins/settings/store';
 import { ITab } from '@/utils/interfaces';
 import Modal from '@/components/Modal.vue';
 
@@ -8,14 +8,14 @@ export interface ISettingsProps {
   tabs?: ITab[],
 }
 
-const store = useStore();
+const settingsStore = useSettingsStore();
 const shortcut = useShortcut();
 shortcut.enable([{
   name: 'toolbar_settings',
   description: 'Open settings dialog',
   keys: ['alt', 's'],
   callback: () => {
-    store.$patch(state => {
+    settingsStore.$patch(state => {
       state.opened = true;
     })
   },
@@ -30,7 +30,7 @@ withDefaults(defineProps<{
 
 <template>
   <Modal
-    v-model="store.opened"
+    v-model="settingsStore.opened"
     width="600"
     height="450"
     scrollable
@@ -40,7 +40,7 @@ withDefaults(defineProps<{
   >
     <template v-slot:[`header.append`]>
       <v-tabs
-        v-model="store.tab"
+        v-model="settingsStore.tab"
         :show-arrows="false"
         bg-color="surface"
         grow
@@ -54,7 +54,7 @@ withDefaults(defineProps<{
       <v-divider />
     </template>
     <template #body>
-      <v-window v-model="store.tab" class="pa-1 ma-n1">
+      <v-window v-model="settingsStore.tab" class="pa-1 ma-n1">
         <v-window-item
           v-for="tab in tabs"
           :value="tab.value"

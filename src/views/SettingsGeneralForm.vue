@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import CategorizedAccordion, { ICategorizedAccordionField } from '@/components/CategorizedAccordion.vue';
-import { useStore } from '@/plugins/settings/store';
+import { useSettingsStore } from '@/plugins/settings/store';
 import { useContentOptionStore } from '@/plugins/content/store';
 import SwitchField, { ISwitchFieldProps, ISwitchFieldListeners } from '@/components/fields/SwitchField.vue';
 
 defineEmits(['update:modelValue'])
 
-const store = useStore();
+const settingsStore = useSettingsStore();
 const contentOptionStore = useContentOptionStore();
 const fields = computed((): ICategorizedAccordionField<ISwitchFieldProps, ISwitchFieldListeners>[] => ([{
   category: 'View',
@@ -27,7 +27,7 @@ const fields = computed((): ICategorizedAccordionField<ISwitchFieldProps, ISwitc
 
 <template>
   <CategorizedAccordion
-    v-model:panels="store.panels"
+    v-model:panels="settingsStore.panels"
     :model-value="fields"
     :filter-props="{
       class: 'mb-3'

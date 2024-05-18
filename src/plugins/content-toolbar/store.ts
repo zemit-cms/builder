@@ -4,6 +4,6 @@ export interface IContentToolbarStore {
   opened: boolean,
 }
 
-export const useStore = definePluginStore<IContentToolbarStore>('contentToolbar', {
+export const useContentToolbarStore = definePluginStore<IContentToolbarStore>('contentToolbar', {
   opened: true,
 })

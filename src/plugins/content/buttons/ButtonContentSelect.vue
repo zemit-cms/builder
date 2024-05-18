@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useContentOptionStore } from './store';
+import { useContentOptionStore } from '../store';
 
 const contentOptionStore = useContentOptionStore();
 </script>

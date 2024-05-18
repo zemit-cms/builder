@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useStore } from '@/plugins/settings/store';
+import { useSettingsStore } from '@/plugins/settings/store';
 import { IButton } from '@/utils/interfaces';
 
-const store = useStore();
+const settingsStore = useSettingsStore();
 const button: IButton<any> = { tooltip: 'Settings', icon: 'mdi-cog', shortcut: 'alt+s', onClick: onSettingsClick };
 
 function onSettingsClick() {
-  store.$patch(state => {
+  settingsStore.$patch(state => {
     state.opened = !state.opened;
   })
 }

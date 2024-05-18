@@ -9,5 +9,5 @@ export interface IContextDrawerStore {
 export const useStore = definePluginStore<IContextDrawerStore>('contextDrawer', {
   opened: true,
   tab: null,
-  width: 256,
+  width: 300,
 })

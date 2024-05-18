@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ContentViewMode } from '@/stores/app'
-import { useStore } from './store'
+import { useContentToolbarStore } from './store'
 import { useZoom } from '@/composables/zoom'
 import { useShortcut } from '@/composables/shortcut';
 import { Component } from 'vue';
@@ -11,7 +11,7 @@ export interface IContentToolbarProps {
   buttons: (IButton<any> | Component)[]
 }
 
-const store = useStore()
+const contentToolbarStore = useContentToolbarStore()
 const {
   increaseZoomIndex,
   decreaseZoomIndex,
@@ -77,7 +77,7 @@ shortcut.enable([{
   <div
     id="content-toolbar"
     :style="[
-      { height: store.opened ? 57 : 0 }
+      { height: contentToolbarStore.opened ? 57 : 0 }
     ]"
     class="animated"
   >

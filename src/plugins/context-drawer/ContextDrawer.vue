@@ -3,10 +3,16 @@ import { useStore } from './store';
 import { useShortcut } from '@/composables/shortcut';
 import { ITab } from '@/utils/interfaces';
 import { IResizeContext, useResizeable } from '@/composables/resizeable';
-import ContextDrawerInner from './ContextDrawerInner.vue';
+import { useRootModel } from '@/plugins/content/composables';
 
 export interface IContextDrawerProps {
   tabs?: ITab[],
+}
+
+interface IWidgetProps {
+  category: string,
+  type: string,
+  options: any[]
 }
 
 const store = useStore();
@@ -49,10 +55,24 @@ onMounted(() => {
   })
 })
 
-withDefaults(defineProps<{
+const props = withDefaults(defineProps<{
   tabs: ITab[],
 }>(), {
   tabs: () => ([]),
+})
+
+const rootModel = useRootModel();
+const selectedProps = computed((): IWidgetProps[] => {
+  const props: IWidgetProps[] = [];
+  rootModel.value.filter(widget => widget.isSelected()).forEach(widget => {
+    const declaration = widget.getDeclaration();
+    console.log(declaration);
+  })
+  return props;
+})
+const activeTabs = computed((): ITab[] => {
+  return rootModel.value.children.length > 0
+    && props.tabs || [];
 })
 </script>
 
@@ -66,9 +86,39 @@ withDefaults(defineProps<{
     location="right"
     ref="drawer"
   >
-    <ContextDrawerInner
-      :tabs="tabs"
-    />
+    <v-alert
+      v-if="activeTabs.length === 0"
+      variant="text"
+      prominent
+      class="h-100 text-center"
+    >
+      <v-icon size="48">mdi-details</v-icon>
+      <div class="font-weight-bold mt-1">Add an element first</div>
+      <p>and contextual options will appear here.</p>
+    </v-alert>
+    <template v-else>
+      <v-tabs
+        v-model="store.tab"
+        :show-arrows="false"
+        grow
+      >
+        <v-tab
+          v-for="tab in activeTabs"
+          :value="tab.value"
+          :key="tab.value"
+        >{{ tab.label }}</v-tab>
+      </v-tabs>
+      <v-window v-model="store.tab">
+        <v-window-item
+          v-for="tab in tabs"
+          :value="tab.value"
+          :key="tab.value"
+          class="pa-4"
+        >
+          <component :is="tab.component"></component>
+        </v-window-item>
+      </v-window>
+    </template>
   </v-navigation-drawer>
 </template>
 

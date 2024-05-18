@@ -11,5 +11,5 @@ const component = props.init();
 </script>
 
 <template>
-  <component :is="component.is" v-bind="component.props"></component>
+  <component v-model="component.props.modelValue" v-bind="component.props" :is="component.is"></component>
 </template>
